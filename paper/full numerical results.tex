@@ -1,0 +1,128 @@
+\begin{table*}[]
+    \centering
+    \begin{tabular}{||c||c|c|c|c||}
+    \hline
+    \multicolumn{5}{|c|}{PhysionetMI, $p=64$, $K=5$, 23 trials/classes, 109 subjects} \\
+    \hline
+    Paradigm & SCM & LW-SCM & Non Linear LW & RMT-KM \\
+    \hline
+    [1,3], 80Hz & {\bf 0.493} & 0.397 & $\times$ & 0.49 \\
+    \hline
+    \hline
+    \multicolumn{5}{|c|}{BNCI2014001, $p=22$, $K=4$, 144 trials/classes, 10 subjects} \\
+    \hline
+    Paradigm & SCM & LW-SCM & Non Linear LW & RMT-KM \\
+    \hline
+    [0,4], 125Hz & {\bf 0.629} & 0.578 & $\times$ & 0.625 \\
+    \hline
+    \hline
+    \multicolumn{5}{|c|}{Schirrmeister2017, $p=128$, $K=4$, 120 trials/classes, 14 subjects} \\
+    \hline
+    Paradigm     & SCM         & LW-SCM & Non Linear LW & RMT-KM \\
+    \hline
+    [0,5], 100Hz & 0.597       & 0.483 & 0.561          & {\bf 0.603} \\
+    \hline
+    [3,5], 100Hz & {\bf 0.519} & 0.411 & $\times$       & 0.513 \\
+    \hline
+    \hline
+    \multicolumn{5}{|c|}{Cho2017, $p=64$, $K=2$, 100 trials/classes, 53 subjects} \\
+    \hline
+    Paradigm & SCM & LW-SCM & Non Linear LW & RMT-KM \\
+    \hline
+    [1,3], 128Hz & 0.615 & 0.609 & 0.601 & {\bf 0.622} \\
+    \hline
+    [0,3], 128Hz & {\bf 0.623}& 0.611 & $\times$ & 0.618 \\
+    \hline
+    \hline
+    \multicolumn{5}{|c|}{Lee2019, $p=62$, $K=2$, 100 trials/classes, 55 subjects} \\
+    \hline
+    Paradigm & SCM & LW-SCM & Non Linear LW & RMT-KM \\
+    \hline
+    [2,3], 100Hz & {\bf 0.666} & 0.642 & 0.626 & 0.66 \\
+    \hline
+    \hline
+    \multicolumn{5}{|c|}{Weibo2014, $p=60$, $K=7$, 80 trials/classes, 10 subjects} \\
+    \hline
+    Paradigm & SCM & LW-SCM & Non Linear LW & RMT-KM \\
+    \hline
+    [0,4], 100Hz & {\bf 0.349} & 0.323 & $\times$ & 0.341 \\
+    \hline
+    [1,3], 100Hz & {\bf 0.409} & 0.349 & $\times$ & 0.403 \\
+    \hline
+    \hline
+    \multicolumn{5}{|c|}{Ofner2017, $p=61$, $K=7$, 60 trials/classes, 15 subjects} \\
+    \hline
+    Paradigm & SCM & LW-SCM & Non Linear LW & RMT-KM \\
+    \hline
+    [0,3], 128Hz & 0.176 & 0.166 & $\times$ & 0.185 \\
+    \hline
+    [1,2], 128Hz & {\bf 0.187} & 0.186 & $\times$ & 0.185 \\
+    \hline
+    \hline
+    \multicolumn{5}{|c|}{MunichMI, $p=128$, $K=2$, 150 trials/classes, 10 subjects} \\
+    \hline
+    Paradigm & SCM & LW-SCM & Non Linear LW & RMT-KM \\
+    \hline
+    [0,7], 100Hz & 0.632 & 0.624 & $\times$ & {\bf 0.638} \\
+    \hline
+    [2,5], 100Hz & {\bf 0.639} & 0.624 & $\times$ & 0.635 \\
+    \hline
+    \end{tabular}
+    \caption{Classification for motor imaging data}
+    \label{tab:my_label}
+\end{table*}
+
+\begin{table*}
+\centering
+\begin{tabular}{|c | c || c | c||c | c||c | c||} 
+\hline
+ \multicolumn{8}{|c|}{Indian Pines} \\
+
+\multicolumn{2}{|c|}{Parameters} & \multicolumn{2}{|c||}{SCM} & \multicolumn{2}{|c||}{LW-SCM} & \multicolumn{2}{|c|}{RMT-KM} \\ [0.5ex] 
+\hline
+Data size $p$ & Number of samples $n$ & Accuracy & mIou & Accuracy & mIou & Accuracy & mIou \\ [0.5ex] 
+\hline\hline
+5 & 5 $\times$ 5 & 0.385 & 0.278 & 0.302 & 0.204 & {\bf 0.454} & {\bf 0.367} \\ 
+10 & 5 $\times$ 5 & 0.363 & 0.243 & 0.313 & 0.218 & {\bf 0.422} & {\bf 0.301} \\ 
+12 & 7 $\times$ 7 & 0.341 & 0.215 & 0.344 & 0.245 & {\bf 0.446} & {\bf 0.320} \\ 
+16 & 5 $\times$ 5 & 0.357 & 0.229 & 0.316 & 0.215 & {\bf 0.413} & {\bf 0.284} \\ 
+\hline
+\multicolumn{8}{|c|}{Salinas} \\
+\hline
+\multicolumn{2}{|c|}{Parameters} & \multicolumn{2}{|c||}{SCM} & \multicolumn{2}{|c||}{LW-SCM} & \multicolumn{2}{|c|}{RMT-KM} \\ [0.5ex] 
+\hline
+Data size $p$ & Number of samples $n$ & Accuracy & mIou & Accuracy & mIou & Accuracy & mIou \\ [0.5ex] 
+\hline\hline
+5 & 5 $\times$ 5 & 0.542 & 0.382 & 0.402 & 0.252 & {\bf 0.777} & {\bf 0.631} \\ 
+10 & 7 $\times$ 7 & 0.525 & 0.34 & 0.449 & 0.303 & {\bf 0.746} & {\bf 0.532} \\ 
+10 & 9 $\times$ 9 & 0.489 & 0.323 & 0.433 & 0.271 & {\bf 0.603} & {\bf 0.446} \\ 
+16 & 11 $\times$ 11 & 0.497 & 0.317 & 0.404 & 0.244 & {\bf 0.632} & {\bf 0.461}\\
+\hline 
+\multicolumn{8}{|c|}{Pavia University} \\
+\hline
+\multicolumn{2}{|c|}{Parameters} & \multicolumn{2}{|c||}{SCM} & \multicolumn{2}{|c||}{LW-SCM} & \multicolumn{2}{|c|}{RMT-KM} \\ [0.5ex] 
+\hline
+Data size $p$ & Number of samples $n$ & Accuracy & mIou & Accuracy & mIou & Accuracy & mIou \\ [0.5ex] 
+\hline
+5 & 5 $\times$ 5 & {\bf 0.452} & 0.288 & 0.38 & 0.273 & 0.435 & {\bf 0.463} \\ 
+10 & 5 $\times$ 5 & 0.44 & 0.291 & - & - & {\bf 0.51} & {\bf 0.451} \\ 
+\hline
+\multicolumn{8}{|c|}{Pavia} \\
+\hline
+\multicolumn{2}{|c|}{Parameters} & \multicolumn{2}{|c||}{SCM} & \multicolumn{2}{|c||}{LW-SCM} & \multicolumn{2}{|c|}{RMT-KM} \\ [0.5ex] 
+\hline
+Data size $p$ & Number of samples $n$ & Accuracy & mIou & Accuracy & mIou & Accuracy & mIou \\ [0.5ex] 
+\hline\hline
+5 & 5 $\times$ 5 & 0.629 & 0.378 & 0.615 & 0.319 & {\bf 0.819} & {\bf 0.549} \\ 
+\hline
+\multicolumn{8}{|c|}{KSC} \\
+\hline
+\multicolumn{2}{|c|}{Parameters} & \multicolumn{2}{|c||}{SCM} & \multicolumn{2}{|c||}{LW-SCM} & \multicolumn{2}{|c|}{RMT-KM} \\ [0.5ex] 
+\hline
+Data size $p$ & Number of samples $n$ & Accuracy & mIou & Accuracy & mIou & Accuracy & mIou \\ [0.5ex] 
+\hline\hline
+5 & 5 $\times$ 5 & 0.263 & 0.167 & 0.247 & 0.169 & {\bf 0.377} & {\bf 0.222} \\ 
+\hline
+\end{tabular}
+\caption{Clustering results for hyperspectral images.}
+\end{table*}

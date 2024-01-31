@@ -1,0 +1,37 @@
+Bootstrap: docker
+From: continuumio/miniconda3
+
+%post
+apt-get update
+apt-get install -y git
+eval "$(conda shell.bash hook)"
+conda activate base
+
+conda install python=3.9 ipython
+conda install numpy scipy pandas
+conda install scikit-learn
+conda install matplotlib plotly seaborn
+conda install pip
+
+pip install pyyaml
+pip install pymanopt
+
+
+pip install doit
+pip install "jax[cpu]"
+pip install git+https://github.com/AmmarMian/qanat
+pip install tikzplotlib
+
+pip install MOABB
+git clone https://github.com/pyRiemann/pyRiemann
+cd pyRiemann
+pip install -e .
+cd ..
+
+%runscript
+eval "$(conda shell.bash hook)" 
+conda activate base
+exec "$@"
+
+%help
+This container is for running AI experiment for sumitted ICML paper on Frechet-mean with Random Matrix Theory.

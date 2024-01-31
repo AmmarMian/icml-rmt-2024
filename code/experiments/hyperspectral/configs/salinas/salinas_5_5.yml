@@ -1,0 +1,9 @@
+dataset_path: data/hyperspectral
+data_name: salinas
+pca_dim: 5
+window_size: 5
+n_init: 5
+max_iter: 100
+skip_zero_class: True
+n_jobs: -1
+seed: 1234

@@ -1,0 +1,8 @@
+# Config file for figure no TODO
+n_features: 5
+n_matrices: 100
+n_samples: 49
+n_trials: 1000
+n_iterations_max: 100
+seed: 7777
+condition_number: 100

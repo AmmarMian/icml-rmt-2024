@@ -1,0 +1,23 @@
+name: icml-rmt-mean
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - matplotlib
+  - plotly
+  - seaborn
+  - pandas
+  - tqdm
+  - numpy
+  - scipy
+  - scikit-learn
+  - pip
+  - ipython
+  - pip:
+    - pymanopt
+    - doit
+    - MOABB
+    - git+https://github.com/pyRiemann/pyRiemann
+    - wget
+    - pyyaml
+    - tikzplotlib
