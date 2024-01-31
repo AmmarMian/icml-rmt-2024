@@ -84,6 +84,28 @@ def task_download_hyperspectral_data():
     }
 
 
+def task_mse_estimation_cov():
+    """Plot MSE of estimated covariance as a function of number of samples."""
+
+    yield {
+            'name': 'nfeatures_5',
+            'actions': [["python",
+                        "experiments/numerical/mse_nsamples_cov.py",
+                        "--config", "experiments/numerical/configs/mse_nsamples_cov_5.yml",
+                        "--n_jobs", "-1", "--results_path", "results/numerical/mse_estimation_cov/5"]],
+            'verbosity': 2
+        }
+
+    yield {
+            'name': 'nfeatures_64',
+            'actions': [["python",
+                        "experiments/numerical/mse_nsamples_cov.py",
+                        "--config", "experiments/numerical/configs/mse_nsamples_cov_64.yml",
+                        "--n_jobs", "-1", "--results_path", "results/numerical/mse_estimation_cov/64"]],
+            'verbosity': 2
+        }
+
+
 def task_mse_iteration():
     """Plot MSE of estimated mean over simulated data as a function of algorithm iteration."""
 
@@ -92,7 +114,7 @@ def task_mse_iteration():
             'actions': [["python",
                          "experiments/numerical/mse_iteration.py",
                         "--config", "experiments/numerical/configs/mse_iteration.yml",
-                         "--n_jobs", "-1"]],
+                        "--n_jobs", "-1", "--results_path", "results/numerical/mse_iteration"]],
             'verbosity': 2
         }
 

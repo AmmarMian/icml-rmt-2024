@@ -6,15 +6,35 @@ from functools import partial
 from scipy.linalg.lapack import dtrtri, dpptrf
 
 from .covariance import SCM_estimator
+from sklearn.covariance import LedoitWolf
 
 
 def symm(x):
     return (x+x.swapaxes(-2,-1))/2
 
 
+def RMT_estimation_cov(data, max_iterations:int=100,
+                    tol:float=1e-6, tol_cost:float=10,
+                       return_iterates:bool=False):
+
+    n_samples, n_features = data.shape
+
+    # init: LW
+    init = LedoitWolf().fit(data).covariance_
+    data = data.reshape((1, n_samples, n_features))
+
+    estimate = RMT_geometric_mean(data,
+                                  init=init,
+                                  max_iterations=max_iterations,
+                                  tol=tol,
+                                  return_iterates=return_iterates)
+    return estimate
+
+
 def RMT_geometric_mean(data:np.ndarray, n_dof=None,
                        init:np.ndarray=None, max_iterations:int=100,
-                       tol:float=1e-6, return_iterates:bool=False):
+                       tol:float=1e-6, tol_cost:float=10,
+                       return_iterates:bool=False):
     """
     Estimates the geometric mean of the true covariance matrices of some data by leveraging random matrix theory.
 
@@ -30,6 +50,8 @@ def RMT_geometric_mean(data:np.ndarray, n_dof=None,
         By default, 10.
     tol : float, optional
         tolerance for stopping criterion, by default 1e-6.
+    tol_cost : float, optional
+        tolerance for stopping criterion based on cost, by default 10.
     return_iterates : bool, optional
         Whether to return all iterates, by default False.
 
@@ -59,7 +81,8 @@ def RMT_geometric_mean(data:np.ndarray, n_dof=None,
     # some other parameters
     oldcost = None
     one_vec = np.ones((n_features,))
-    while (err > tol) and (it < max_iterations):
+    cost = np.inf
+    while (cost > -tol_cost/n_features) and (err > tol) and (it < max_iterations):
         # Cholesky and inverse of M
         L = np.zeros((n_features,n_features))
         L[trilix] = dpptrf(n_features,M[trilix])[0] 
@@ -73,7 +96,7 @@ def RMT_geometric_mean(data:np.ndarray, n_dof=None,
         d, W = la.eigh(descent_dir)
         trans_mats = W.T @ trans_SCMs @ W
         # stepsize
-        alpha = _aux_linesearch(d,trans_mats, partial(_aux_RMT_mean_cost_grad, n_features=n_features, n_samples=n_dof, c=c, return_grad=False),cost,oldcost)
+        alpha = _aux_linesearch(d,trans_mats, partial(_aux_RMT_mean_cost_grad, n_features=n_features, n_samples=n_dof, c=c, return_grad=False),cost,oldcost, tol_cost=tol_cost)
         alphad = alpha*d
         # new iterate
         tmp = L @ W
@@ -220,7 +243,7 @@ def _aux_mean_cost_grad(mats, n_features, return_grad=True):
     else:
         return cost
 
-def _aux_linesearch(d, trans_mats, _aux_cost, cost, oldcost=None):
+def _aux_linesearch(d, trans_mats, _aux_cost, cost, oldcost=None, tol_cost=10):
     alpha0=1
     optimism = 2
     sufficient_decrease = 1e-4
@@ -240,7 +263,7 @@ def _aux_linesearch(d, trans_mats, _aux_cost, cost, oldcost=None):
     newcost = _aux_cost(new_mats)
     ls_it = 0
     # perform backtracking
-    while (newcost > cost - sufficient_decrease * alpha * norm_grad_2) and (ls_it < ls_maxit):
+    while (newcost > cost - sufficient_decrease * alpha * norm_grad_2) and (ls_it < ls_maxit) and (newcost > -tol_cost/new_mats.shape[-1]):
         alpha *= contraction_factor
         diag = (1 + alpha*d + alpha**2*d**2/2)**(-0.5)
         new_mats = np.einsum('i,...ij,j->...ij',diag,trans_mats,diag)

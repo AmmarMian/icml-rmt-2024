@@ -38,19 +38,30 @@ from src.mean import geometric_mean, RMT_geometric_mean
 import matplotlib.pyplot as plt
 # Activate LaTex rendering for matplotlib
 import matplotlib
-matplotlib.rcParams['text.usetex'] = True
+# matplotlib.rcParams['text.usetex'] = True
 
-# Styling matplotlib
-plt.style.use('dark_background')
-matplotlib.rcParams['axes.spines.right'] = False
-matplotlib.rcParams['axes.spines.top'] = False
-matplotlib.rcParams['axes.grid'] = True
-matplotlib.rcParams['grid.alpha'] = 0.15
-matplotlib.rcParams['grid.linestyle'] = 'dotted'
-matplotlib.rcParams['axes.facecolor'] = (0.1, 0.1, 0.1, 0.4)
-matplotlib.rcParams['font.family'] = 'serif'
-# matplotlib.rcParams['font.serif'] = 'Times New Roman'
-matplotlib.rcParams['font.size'] = 11
+# # Styling matplotlib
+# plt.style.use('dark_background')
+# matplotlib.rcParams['axes.spines.right'] = False
+# matplotlib.rcParams['axes.spines.top'] = False
+# matplotlib.rcParams['axes.grid'] = True
+# matplotlib.rcParams['grid.alpha'] = 0.15
+# matplotlib.rcParams['grid.linestyle'] = 'dotted'
+# matplotlib.rcParams['axes.facecolor'] = (0.1, 0.1, 0.1, 0.4)
+# matplotlib.rcParams['font.family'] = 'serif'
+# # matplotlib.rcParams['font.serif'] = 'Times New Roman'
+# matplotlib.rcParams['font.size'] = 11
+
+from tikzplotlib import save as tikz_save
+
+def tikzplotlib_fix_ncols(obj):
+    """
+    workaround for matplotlib 3.6 renamed legend's _ncol to _ncols, which breaks tikzplotlib
+    """
+    if hasattr(obj, "_ncols"):
+        obj._ncol = obj._ncols
+    for child in obj.get_children():
+        tikzplotlib_fix_ncols(child)
 
 if __name__ == "__main__":
 
@@ -165,17 +176,22 @@ if __name__ == "__main__":
                         for i, method in product(
                             range(config["n_trials"]),
                             estimation_methods.keys())])
-    columns = ["trial", "method", "iteration", "error"]
-    df = pd.DataFrame(columns=columns)
+    data = np.nan*np.ones((config['n_trials'],
+                            len(estimation_methods.keys()),
+                            max_iterations))
     for i, method in product(range(config["n_trials"]),
                             estimation_methods.keys()):
-        for iteration in range(max_iterations):
-            # complete iterations with NaN
-            if iteration >= len(errors[i][method]):
-                error = np.nan
-            else:
-                error = errors[i][method][iteration]
-            df.loc[len(df)] = [i, method, iteration, error]
+        i_method = list(estimation_methods.keys()).index(method)
+        len_errors = len(errors[i][method])
+        data[i, i_method, :len_errors] = errors[i][method]
+
+    list_df = []
+    for i, method in enumerate(estimation_methods.keys()):
+        df = pd.DataFrame(data[:, i, :])
+        df = df.melt(var_name="iteration", value_name="error")
+        df["method"] = method
+        list_df.append(df)
+    df = pd.concat(list_df)
 
     # Compute mean, 5th and 95th percentiles for each method at each iteration
     # We ignore the NaNs
@@ -183,11 +199,9 @@ if __name__ == "__main__":
     df_5 = df.groupby(["method", "iteration"]).quantile(0.05)
     df_95 = df.groupby(["method", "iteration"]).quantile(0.95)
 
-    # Drop column of trial number and make a 2D array with column as iteration
-    # and row as method
-    df_mean = df_mean.drop(columns="trial").unstack(level=1)
-    df_5 = df_5.drop(columns="trial").unstack(level=1)
-    df_95 = df_95.drop(columns="trial").unstack(level=1)
+    df_mean = df_mean.unstack(level=1)
+    df_5 = df_5.unstack(level=1)
+    df_95 = df_95.unstack(level=1)
     logging.info("Results formatted")
     logging.info(f"Mean:\n{df_mean}")
     logging.info(f"5th percentile:\n{df_5}")
@@ -198,12 +212,10 @@ if __name__ == "__main__":
     df_mean.to_csv(f"{os.path.join(config['results_path'], 'mean.csv')}")
     df_5.to_csv(f"{os.path.join(config['results_path'], '5.csv')}")
     df_95.to_csv(f"{os.path.join(config['results_path'], '95.csv')}")
-    df.to_csv(f"{os.path.join(config['results_path'], 'raw.csv')}")
     string = "Results saved in:\n" +\
             f"{os.path.join(config['results_path'], 'mean.csv')}\n" +\
             f"{os.path.join(config['results_path'], '5.csv')}\n" +\
-            f"{os.path.join(config['results_path'], '95.csv')}\n" +\
-            f"{os.path.join(config['results_path'], 'raw.csv')}"
+            f"{os.path.join(config['results_path'], '95.csv')}"
     logging.info(string)
 
     # Plotting
@@ -218,24 +230,27 @@ if __name__ == "__main__":
                     alpha=0.3, color=colors[i])
     ax.legend(loc="upper right")
     ax.set_yscale("log")
-    ax.set_xlabel("Iteration")
+    ax.set_xlabel("iteration")
     ax.set_ylabel("MSE")
-    ax.set_title("MSE over iteration for different algorithms")
+    # ax.set_title("MSE over iteration for different algorithms")
 
-    # Box to show parameters
-    textstr = '\n'.join((
-        r'$n_{\mathrm{features}}=%d$' % (config["n_features"], ),
-        r'$n_{\mathrm{matrices}}=%d$' % (config["n_matrices"], ),
-        r'$n_{\mathrm{samples}}=%d$' % (config["n_samples"], ),
-        r'$n_{\mathrm{trials}}=%d$' % (config["n_trials"], ),
-        r'$n_{\mathrm{iterations}}=%d$' % (config["n_iterations_max"], ),
-        r'$\mathrm{seed}=%d$' % (config["seed"], ),
-        r'$\mathrm{condition\ number}=%d$' % (config["condition_number"], )))
-    props = dict(boxstyle='round', facecolor='white', alpha=0.2)
-    ax.text(0.05, 0.05, textstr, transform=ax.transAxes, fontsize=10,
-            verticalalignment='bottom', bbox=props)
-    fig.savefig(os.path.join(config["results_path"], "mse_iteration.png"))
-    logging.info(f"Plot saved in {os.path.join(config['results_path'], 'mse_iteration.png')}")
+    # # Box to show parameters
+    # textstr = '\n'.join((
+    #     r'$n_{\mathrm{features}}=%d$' % (config["n_features"], ),
+    #     r'$n_{\mathrm{matrices}}=%d$' % (config["n_matrices"], ),
+    #     r'$n_{\mathrm{samples}}=%d$' % (config["n_samples"], ),
+    #     r'$n_{\mathrm{trials}}=%d$' % (config["n_trials"], ),
+    #     r'$n_{\mathrm{iterations}}=%d$' % (config["n_iterations_max"], ),
+    #     r'$\mathrm{seed}=%d$' % (config["seed"], ),
+    #     r'$\mathrm{condition\ number}=%d$' % (config["condition_number"], )))
+    # props = dict(boxstyle='round', facecolor='white', alpha=0.2)
+    # ax.text(0.05, 0.05, textstr, transform=ax.transAxes, fontsize=10,
+    #         verticalalignment='bottom', bbox=props)
+    fig.savefig(os.path.join(config["results_path"], "mse_iteration.pdf"))
+    logging.info(f"Plot saved in {os.path.join(config['results_path'], 'mse_iteration.pdf')}")
+    ax = tikzplotlib_fix_ncols(ax)
+    tikz_save(os.path.join(config["results_path"], "mse_iteration.tex"))
+    logging.info(f"Plot saved in {os.path.join(config['results_path'], 'mse_iteration.tex')}")
 
     if config["show_plots"]:
         logging.info("Showing plots")
