@@ -4,7 +4,9 @@
 
 \newcommand*{\nfeatures}{\ensuremath{p}}
 \newcommand*{\nsamples}{\ensuremath{n}}
-\newcommand{\nc}{\ensuremath{c}}
+\newcommand*{\nc}{\ensuremath{c}}
+\newcommand*{\nmatrices}{\ensuremath{K}}
+\newcommand*{\nclasses}{\ensuremath{Z}}
 
 
 \newcommand*{\realSpace}{\ensuremath{\mathbb{R}}}
@@ -25,6 +27,10 @@
 \newcommand*{\CovRMTdist}{\ensuremath{\MAT{\hat{C}}_{\textup{dist}}}}
 
 \newcommand*{\Mean}{\ensuremath{\MAT{G}}}
+\newcommand*{\MeanRMT}{\ensuremath{\MAT{\hat{G}}_{\textup{RMT}}}}
+\newcommand*{\MeanSCM}{\ensuremath{\MAT{\hat{G}}_{\textup{SCM}}}}
+\newcommand*{\MeanLinearLW}{\ensuremath{\MAT{\hat{G}}_{\textup{LW}}}}
+\newcommand*{\MeanNonLinearLW}{\ensuremath{\MAT{\hat{G}}_{\textup{LW-NL}}}}
 
 
 \newcommand*{\point}{\ensuremath{\MAT{R}}}
@@ -64,7 +70,9 @@
 \DeclareMathOperator{\symm}{sym}
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
 % \DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\expm}{expm}
 
 \newcommand*{\grad}{\ensuremath{\nabla}}
 

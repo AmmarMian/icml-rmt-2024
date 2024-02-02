@@ -1,0 +1,13 @@
+condition_number: 100.0
+config: null
+n_features: 64
+n_iterations_max: 100
+n_jobs: 1
+n_points: 40
+n_trials: 10
+results_path: test
+samples_power_end: 2.0
+seed: 1234
+show_plots: true
+tol: 1.0e-06
+tol_cost: 10.0

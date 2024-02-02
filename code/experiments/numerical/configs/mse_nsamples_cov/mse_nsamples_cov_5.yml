@@ -1,0 +1,11 @@
+# Config file for figure no TODO
+n_features: 5
+n_trials: 1000
+n_iterations_max: 100
+seed: 7777
+condition_number: 100
+n_points: 50
+samples_power_end: 4
+tol: 1e-6
+tol_cost: 10
+

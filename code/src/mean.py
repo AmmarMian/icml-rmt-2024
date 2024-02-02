@@ -21,12 +21,13 @@ def RMT_estimation_cov(data, max_iterations:int=100,
 
     # init: LW
     init = LedoitWolf().fit(data).covariance_
-    data = data.reshape((1, n_samples, n_features))
+    data =np.expand_dims(data, axis=0)
 
     estimate = RMT_geometric_mean(data,
                                   init=init,
                                   max_iterations=max_iterations,
                                   tol=tol,
+                                  tol_cost=tol_cost,
                                   return_iterates=return_iterates)
     return estimate
 

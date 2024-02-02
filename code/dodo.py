@@ -87,20 +87,12 @@ def task_download_hyperspectral_data():
 def task_mse_estimation_cov():
     """Plot MSE of estimated covariance as a function of number of samples."""
 
-    yield {
-            'name': 'nfeatures_5',
-            'actions': [["python",
-                        "experiments/numerical/mse_nsamples_cov.py",
-                        "--config", "experiments/numerical/configs/mse_nsamples_cov_5.yml",
-                        "--n_jobs", "-1", "--results_path", "results/numerical/mse_estimation_cov/5"]],
-            'verbosity': 2
-        }
 
     yield {
             'name': 'nfeatures_64',
             'actions': [["python",
                         "experiments/numerical/mse_nsamples_cov.py",
-                        "--config", "experiments/numerical/configs/mse_nsamples_cov_64.yml",
+                        "--config", "experiments/numerical/configs/mse_nsamples_cov/mse_nsamples_cov_64.yml",
                         "--n_jobs", "-1", "--results_path", "results/numerical/mse_estimation_cov/64"]],
             'verbosity': 2
         }
@@ -125,7 +117,7 @@ def task_mse_nmatrices():
             'name': '5_7',
             'actions': [["python",
                          "experiments/numerical/mse_nmatrices.py",
-                        "--config", "experiments/numerical/configs/mse_nfeatures_5_nsamples_7.yml",
+                        "--config", "experiments/numerical/configs/mse_nmatrices/mse_nfeatures_5_nsamples_7.yml",
                         "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/5_7"]],
             'verbosity': 2
         }
@@ -134,7 +126,7 @@ def task_mse_nmatrices():
             'name': '5_25',
             'actions': [["python",
                          "experiments/numerical/mse_nmatrices.py",
-                        "--config", "experiments/numerical/configs/mse_nfeatures_5_nsamples_25.yml",
+                        "--config", "experiments/numerical/configs/mmse_nmatrices/se_nfeatures_5_nsamples_25.yml",
                         "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/5_25"]],
             'verbosity': 2
         }
@@ -143,7 +135,7 @@ def task_mse_nmatrices():
             'name': '64_66',
             'actions': [["python",
                          "experiments/numerical/mse_nmatrices.py",
-                        "--config", "experiments/numerical/configs/mse_nfeatures_64_nsamples_66.yml",
+                        "--config", "experiments/numerical/configs/mmse_nmatrices/se_nfeatures_64_nsamples_66.yml",
                         "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/64_66"]],
             'verbosity': 2
         }
@@ -152,7 +144,7 @@ def task_mse_nmatrices():
             'name': '64_128',
             'actions': [["python",
                          "experiments/numerical/mse_nmatrices.py",
-                        "--config", "experiments/numerical/configs/mse_nfeatures_64_nsamples_128.yml",
+                        "--config", "experiments/numerical/configs/mmse_nmatrices/se_nfeatures_64_nsamples_128.yml",
                         "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/64_128"]],
             'verbosity': 2
         }
@@ -161,7 +153,7 @@ def task_mse_nmatrices():
             'name': '64_512',
             'actions': [["python",
                         "experiments/numerical/mse_nmatrices.py",
-                        "--config", "experiments/numerical/configs/mse_nfeatures_64_nsamples_512.yml",
+                        "--config", "experiments/numerical/configs/mmse_nmatrices/se_nfeatures_64_nsamples_512.yml",
                         "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/64_512"]],
             'verbosity': 2
         }
