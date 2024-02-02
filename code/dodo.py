@@ -111,34 +111,46 @@ def task_mse_iteration():
         }
 
 
+def tas_mse_nsamples():
+    """Plot MSE of estimated mean over simulated data as a function of number of samples."""
+    return {
+            'basename': 'mse_nsamples',
+            'actions': [["python",
+                        "experiments/numerical/mse_nsamples.py",
+                        "--config", "experiments/numerical/configs/mse_nsamples/mse_features_64.yml",
+                        "--n_jobs", "-1", "--results_path", "results/numerical/mse_nsamples"]],
+            'verbosity': 2
+        }
+
+
 def task_mse_nmatrices():
     """Plot MSE of estimated mean over simulated data as a function of number of matrices."""
-    yield {
-            'name': '5_7',
-            'actions': [["python",
-                         "experiments/numerical/mse_nmatrices.py",
-                        "--config", "experiments/numerical/configs/mse_nmatrices/mse_nfeatures_5_nsamples_7.yml",
-                        "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/5_7"]],
-            'verbosity': 2
-        }
+    # yield {
+    #         'name': '5_7',
+    #         'actions': [["python",
+    #                      "experiments/numerical/mse_nmatrices.py",
+    #                     "--config", "experiments/numerical/configs/mse_nmatrices/mse_nfeatures_5_nsamples_7.yml",
+    #                     "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/5_7"]],
+    #         'verbosity': 2
+    #     }
 
-    yield {
-            'name': '5_25',
-            'actions': [["python",
-                         "experiments/numerical/mse_nmatrices.py",
-                        "--config", "experiments/numerical/configs/mmse_nmatrices/se_nfeatures_5_nsamples_25.yml",
-                        "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/5_25"]],
-            'verbosity': 2
-        }
+    # yield {
+    #         'name': '5_25',
+    #         'actions': [["python",
+    #                      "experiments/numerical/mse_nmatrices.py",
+    #                     "--config", "experiments/numerical/configs/mmse_nmatrices/se_nfeatures_5_nsamples_25.yml",
+    #                     "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/5_25"]],
+    #         'verbosity': 2
+    #     }
 
-    yield {
-            'name': '64_66',
-            'actions': [["python",
-                         "experiments/numerical/mse_nmatrices.py",
-                        "--config", "experiments/numerical/configs/mmse_nmatrices/se_nfeatures_64_nsamples_66.yml",
-                        "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/64_66"]],
-            'verbosity': 2
-        }
+    # yield {
+    #         'name': '64_66',
+    #         'actions': [["python",
+    #                      "experiments/numerical/mse_nmatrices.py",
+    #                     "--config", "experiments/numerical/configs/mmse_nmatrices/se_nfeatures_64_nsamples_66.yml",
+    #                     "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/64_66"]],
+    #         'verbosity': 2
+    #     }
 
     yield {
             'name': '64_128',
@@ -149,14 +161,14 @@ def task_mse_nmatrices():
             'verbosity': 2
         }
 
-    yield {
-            'name': '64_512',
-            'actions': [["python",
-                        "experiments/numerical/mse_nmatrices.py",
-                        "--config", "experiments/numerical/configs/mmse_nmatrices/se_nfeatures_64_nsamples_512.yml",
-                        "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/64_512"]],
-            'verbosity': 2
-        }
+    # yield {
+    #         'name': '64_512',
+    #         'actions': [["python",
+    #                     "experiments/numerical/mse_nmatrices.py",
+    #                     "--config", "experiments/numerical/configs/mmse_nmatrices/se_nfeatures_64_nsamples_512.yml",
+    #                     "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/64_512"]],
+    #         'verbosity': 2
+    #     }
 
 
 def task_indianpines():

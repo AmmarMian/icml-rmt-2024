@@ -19,7 +19,6 @@ pip install pymanopt
 
 pip install doit
 pip install "jax[cpu]"
-pip install git+https://github.com/AmmarMian/qanat
 pip install tikzplotlib
 
 pip install MOABB
