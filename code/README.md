@@ -7,39 +7,39 @@ This repository contains code to reproduce numerical experiments presented in a 
 
 ```console
 
-├──  CONFIG.sh
-├──  data
-├──  dodo.py
-├──  environment
-│  ├──  conda.yml
-│  └──  icml-rmt-mean.def
-├──  experiments
-│  ├──  eeg
-│  │  └──  main.py
-│  ├──  hyperspectral
-│  │  ├──  configs
-│  │  ├──  data.py
-│  │  ├──  main.py
-│  │  └──  pipelines_utils.py
-│  └──  numerical
-│     ├──  batch_export_results.sh
-│     ├──  configs
-│     ├──  export_to_latex.py
-│     ├──  mse_grid.py
-│     ├──  mse_iteration.py
-│     ├──  mse_nmatrices.py
-│     ├──  mse_nsamples_cov.py
-│     └──  mse_samples.py
-├──  README.md
-└──  src
-   ├──  __init__.py
-   ├──  classification.py
-   ├──  covariance.py
-   ├──  distance.py
-   ├──  estimation.py
-   ├──  mean.py
-   ├──  spd_manifold.py
-   └──  utils.py
+├── CONFIG.sh
+├── data
+├── dodo.py
+├── environment
+│  ├── conda.yml
+│  └── icml-rmt-mean.def
+├── experiments
+│  ├── eeg
+│  │  └── main.py
+│  ├── hyperspectral
+│  │  ├── configs
+│  │  ├── data.py
+│  │  ├── main.py
+│  │  └── pipelines_utils.py
+│  └── numerical
+│     ├── batch_export_results.sh
+│     ├── configs
+│     ├── export_to_latex.py
+│     ├── mse_grid.py
+│     ├── mse_iteration.py
+│     ├── mse_nmatrices.py
+│     ├── mse_nsamples_cov.py
+│     └── mse_samples.py
+├── README.md
+└── src
+   ├── __init__.py
+   ├── classification.py
+   ├── covariance.py
+   ├── distance.py
+   ├── estimation.py
+   ├── mean.py
+   ├── spd_manifold.py
+   └── utils.py
 ```
 
 The main code for the methods is provided in `src/` directory. Notably in file `mean.py` for the computation of the new Fréchet mean. Experiments are provided in the `experiments/` directory. The `dodo.py` file is a [pydoit](https://pydoit.org/) file to run the experiments. The `environment/` directory contains the conda environment file and the definition file for the apptainer container. The `data/` directory is used to store the datasets.
