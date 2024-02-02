@@ -156,7 +156,7 @@ def task_mse_nmatrices():
             'name': '64_128',
             'actions': [["python",
                          "experiments/numerical/mse_nmatrices.py",
-                        "--config", "experiments/numerical/configs/mmse_nmatrices/se_nfeatures_64_nsamples_128.yml",
+                        "--config", "experiments/numerical/configs/mse_nmatrices/mse_nfeatures_64_nsamples_128.yml",
                         "--n_jobs", "-1", "--results_path", "results/numerical/mse_nmatrices/64_128"]],
             'verbosity': 2
         }
@@ -291,14 +291,14 @@ def task_pavia():
     }
 
 
-def task_KSC():
+def task_ksc():
     """Run K-means clustering comparison on KSC dataset."""
     yield {
             'name': '5_5',
             'actions': [["python",
                         "experiments/hyperspectral/main.py",
-                        "--config", "experiments/hyperspectral/configs/KSC/KSC_5_5.yml",
-                        "--n_jobs", "-1", "--results_path", "results/hyperspectral/KSC/5_5"]],
+                        "--config", "experiments/hyperspectral/configs/KSC/ksc_5_5.yml",
+                        "--n_jobs", "-1", "--results_path", "results/hyperspectral/ksc/5_5"]],
             'verbosity': 2
     }
 
