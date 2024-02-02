@@ -110,6 +110,7 @@ doit task_name
 where the task are reported in the following tables:
 
 1. Synthetic experiments
+
 | task_name         | associated command                                                                                                                  | description                                                                                                           |
 |-------------------|-------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
 | mse_iteration     | python experiments/numerical/mse_iteration.py --config experiments/numerical/configs/mse_iteration.yml                              | produce visualization of error of MSE of estimated mean as a function of algorithm iteration. Not shown in the paper. |
