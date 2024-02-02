@@ -120,7 +120,7 @@ where the task are reported in the following tables:
 
 The scripts are done in a manner that one can ovveride the config file using an option '--parameter <parameter_value>'. Some other configuration files are also available in the 'experiments/numerical/configs' directory. To run different paramters use the python script and the --config option while ovveriding the parameters you want to change.
 
-By default, the results are saved in the 'results' directory. The figures are saved in the 'results/<task_name>' directory.
+By default, the results are saved in the 'results' directory. The figures are saved in the `results/<task_name>` directory.
 
 2. Hyperspectral experiments
 
