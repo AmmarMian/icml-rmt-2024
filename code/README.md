@@ -60,6 +60,7 @@ Make sure to have the following packages installed:
 * doit
 * pyyaml
 * wget
+* scikit-rmt
 
 2. Creating a new conda environment
 
@@ -114,13 +115,13 @@ where the task are reported in the following tables:
 | task_name         | associated command                                                                                                                  | description                                                                                                           |
 |-------------------|-------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
 | mse_iteration     | `python experiments/numerical/mse_iteration.py --config experiments/numerical/configs/mse_iteration.yml`                              | produce visualization of error of MSE of estimated mean as a function of algorithm iteration. Not shown in the paper. |
-| mse_iteration_cov | `python experiments/numerical/mse_nsamples_cov.py --config experiments/numerical/configs/mse_nsamples_cov/mse_nsamples_cov_64.yml`    | produces figure 1                                                                                                     |
+| mse_estimation_cov | `python experiments/numerical/mse_nsamples_cov.py --config experiments/numerical/configs/mse_nsamples_cov/mse_nsamples_cov_64.yml`    | produces figure 1                                                                                                     |
 | mse_nsamples      | `python experiments/numerical/mse_nsamples.py --config experiments/numerical/configs/mse_nsamples/mse_nfeatures_64.yml`               | produces figure 2                                                                                                     |
 | mse_nmatrices     | `python experiments/numerical/mse_nmatrices.py --config experiments/numerical/configs/mmse_nmatrices/se_nfeatures_64_nsamples_128.yml` | produces figure 3
 
-The scripts are done in a manner that one can ovveride the config file using an option '--parameter <parameter_value>'. Some other configuration files are also available in the 'experiments/numerical/configs' directory. To run different paramters use the python script and the --config option while ovveriding the parameters you want to change.
+The scripts are done in a manner that one can ovveride the config file using an option '--parameter <parameter_value>'. Some other configuration files are also available in the `experiments/numerical/configs` directory. To run different paramters use the python script and the --config option while ovveriding the parameters you want to change.
 
-By default, the results are saved in the 'results' directory. The figures are saved in the `results/<task_name>` directory.
+By default, the results are saved in the `results` directory. The figures are saved in the `results/<task_name>` directory.
 
 2. Hyperspectral experiments
 
