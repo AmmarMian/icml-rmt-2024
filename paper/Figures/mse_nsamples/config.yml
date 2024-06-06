@@ -13,6 +13,6 @@ n_samples:
 - 200
 - 300
 n_trials: 100
-results_path: mse_nsamples/2024-02-01_17-05-05
+results_path: /home/ammarmian/papers/icml_2024/code/mse_nsamples/2024-02-01_17-05-05
 seed: 7777
 show_plots: false

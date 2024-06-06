@@ -23,6 +23,7 @@
 % \usetikzlibrary{external}
 \usepackage{tikz}
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \usepgfplotslibrary{fillbetween}
 \usepackage{subcaption}
 
@@ -31,10 +32,10 @@
 \newcommand{\theHalgorithm}{\arabic{algorithm}}
 
 % Use the following line for the initial blind version submitted for review:
-\usepackage{icml2024}
+% \usepackage{icml2024}
 
 % If accepted, instead use the following line for the camera-ready submission:
-% \usepackage[accepted]{icml2023}
+\usepackage[accepted]{icml2024}
 
 % For theorems and such
 \usepackage{units}
@@ -76,6 +77,11 @@
 
 \begin{document}
 
+\definecolor{darkgray}{RGB}{75,75,75}
+\definecolor{myblue}{HTML}{1f77b4}
+\definecolor{myorange}{HTML}{ff7f0e}
+\definecolor{myred}{HTML}{d62728}
+
 \twocolumn[
 \icmltitle{Random matrix theory improved Fréchet mean of symmetric positive definite matrices}
 
@@ -94,6 +100,19 @@
 % in order of appearance and this is the preferred way.
 \icmlsetsymbol{equal}{*}
 
+\begin{icmlauthorlist}
+\icmlauthor{Florent Bouchard}{l2s}
+\icmlauthor{Ammar Mian}{listic}
+\icmlauthor{Malik Tiomoko}{huawei}
+\icmlauthor{Guillaume Ginolhac}{listic}
+\icmlauthor{Frédéric Pascal}{l2s}
+\end{icmlauthorlist}
+
+\icmlaffiliation{huawei}{Huawei Paris Research Center}
+\icmlaffiliation{l2s}{Université Paris Saclay, CNRS, CentraleSupélec, L2S}
+\icmlaffiliation{listic}{Université Savoie Mont Blanc, LISTIC}
+
+\icmlcorrespondingauthor{Florent Bouchard}{florent.bouchard@cnrs.fr}
 
 % You may provide any keywords that you
 % find helpful for describing your paper; these are used to populate
@@ -165,9 +184,19 @@ In \cite{tiomoko2019random}, a novel approach was introduced, utilizing a distan
 
 % We believe it is important to propose regularization strategies adapted to the corresponding application. For example, in \cite{Kammoun2017}, the criterion is not the MSE or a distance, but maximizing the probability of detection. As the main objective of the proposed algorithm is detection, this approach achieves much better results than conventional regularization strategies. So, based on the results of \cite{couillet2019random}, we propose a new regularization strategy directly related to classification algorithms. In this paper, a new Fréchet mean is derived from the improved distance proposed in \cite{tiomoko2019random}. This new Fréchet mean is used to develop new nearest centroid and K-means algorithms. Both algorithms have been tested on real data and show promising results, particularly when the number of matrices for each class is large. We also note that these improvements occur even with small matrices, demonstrating the robustness of our approach to RMT assumptions. 
 
-We recognize the significance of tailoring regularization strategies to specific applications. For instance. For example, in \cite{Kammoun2017}, the criterion is not the MSE or a distance, but maximizing the probability of detection. Given the primary goal of detection, this tailored approach yields substantially better outcomes compared to conventional regularization techniques. So, based on the results of \cite{couillet2019random,tiomoko2019random}, we propose a new regularization strategy directly related to classification algorithms. In particular, a new Fréchet mean is derived from the improved distance proposed in \cite{couillet2019random}. This newly formulated Fréchet mean underpins the development of updated versions of the nearest centroid and K-means algorithms. Both algorithms have been tested on real data and show promising results, particularly when the number of matrices for each class is large. We also note that these improvements occur even with small matrices, demonstrating the robustness of our approach to RMT assumptions. 
+We recognize the significance of tailoring regularization strategies to specific applications. For example, in \cite{Kammoun2017}, the criterion is not the MSE or a distance, but maximizing the probability of detection. Given the primary goal of detection, this tailored approach yields substantially better outcomes compared to conventional regularization techniques. So, based on the results of \cite{couillet2019random,tiomoko2019random}, we propose a new regularization strategy directly related to classification algorithms.
+In particular, we are interested in barycenters, which are for instance central to nearest centroid and K-means algorithms.
+Specifically, our contributions are the followings:
+\begin{itemize}
+    \item First, we improve the RMT based covariance estimator proposed in~\cite{tiomoko2019random}. 
+    \item Second, the main contribution is to propose a new RMT corrected Fréchet mean of SPD matrices by exploiting the improved distance from~\cite{couillet2019random}.
+    \item Third, we adapt learning algorithms, \emph{i.e.}, K-means and nearest centroid classifier, to our new RMT mean.
+    \item Finally, the interest of our approach is proved on both simulated and real EEG and hyperspectral data.
+\end{itemize}
 
-To ensure reproducibility, the code for the experiments discussed is accessible at \url{https://anonymous.4open.science/r/icml-rmt-2024-D5DC}.
+%a new Fréchet mean is derived from the improved distance proposed in \cite{couillet2019random}. This newly formulated Fréchet mean underpins the development of updated versions of the nearest centroid and K-means algorithms. Both algorithms have been tested on real data and show promising results, particularly when the number of matrices for each class is large. We also note that these improvements occur even with small matrices, demonstrating the robustness of our approach to RMT assumptions. 
+
+To ensure reproducibility, the code for the experiments discussed is accessible at \url{https://github.com/AmmarMian/icml-rmt-2024}.
 
 \section{Preliminaries}
 
@@ -180,7 +209,7 @@ Recently, with the rise of machine learning, distances between covariance matric
 \subsubsection{Covariance estimation}
 
 Let $\dataMat\in\realSpace^{\nfeatures\times\nsamples}$ with true covariance $\Cov$ and SCM $\SCM=\frac1{\nsamples}\dataMat\dataMat^T$.
-The most famous -- and probably the simplest -- way to regularize the SCM $\SCM$ consists in linearly shrink it with $\linearLW = \rho\eye + \sqrt{1-\rho^2}\SCM$~\cite{ledoit2004well}.
+The most famous -- and probably the simplest -- way to regularize the SCM $\SCM$ consists in the linear shrinkage: $\linearLW = \rho\eye + \sqrt{1-\rho^2}\SCM$~\cite{ledoit2004well}.
 Parameter $\rho>0$ is chosen so that it minimizes the expected $\ell2$ distance $\mathbb{E}[\| \Cov - \linearLW \|_2]$ asymptotically.
 To estimate $\rho$ consistently, basic results from RMT are used.
 %
@@ -268,14 +297,15 @@ The main limitation of these RMT squared distance estimators is that they are va
 % Since they exploit the results from~\cite{silverstein1995empirical}, one very important thing to bare in mind is that these RMT corrected distance estimators are relevant only if $\dataMat_1$ and $\dataMat_2$ are independent (respectively that $\point$ is not constructed with $\dataMat$).
 
 
-We focus on the squared Fisher distance~\cite{skovgaard1984riemannian}, which is, for all $\Cov_1$ and $\Cov_2\in\SPDman$,
+We focus on the squared Fisher distance~\cite{skovgaard1984riemannian}, which is, for all $\Cov_1$ and $\Cov_2\in\SPDman$ (manifold of SPD matrices),
 \begin{equation}
     \begin{array}{rcl}
-        \delta^2(\Cov_1,\Cov_2) & = & \frac1{2\nfeatures}\| \log(\Cov_1^{-1}\Cov_2) \|_2^2  \\
-         & = & \frac1{2\nfeatures}\sum_{i=1}^{\nfeatures} \log^2(\lambda_i(\Cov_1^{-1}\Cov_2)).
+        \delta^2(\Cov_1,\Cov_2) & = & \frac1{2\nfeatures}\| \logm(\Cov_1^{-1}\Cov_2) \|_2^2  \\
+         & = & \frac1{2\nfeatures}\sum_{i=1}^{\nfeatures} \log^2(\lambda_i(\Cov_1^{-1}\Cov_2)),
     \end{array}
 \label{eq:Fisher_dist}
 \end{equation}
+where $\logm(\cdot)$ denotes the matrix logarithm.
 % Given $\dataMat_1\in\realSpace^{\nfeatures\times\nsamples_1}$ and $\dataMat_2\in\realSpace^{\nfeatures\times\nsamples_2}$, the correction advocated in~\cite{couillet2019random} is
 % \begin{multline}
 %     \RMTdistSCMs(\SCM_1,\SCM2) = \frac1{2\nfeatures}\sum_{i=1}^{\nfeatures} \log^2((1-\nc_1)\lambda_i)
@@ -312,29 +342,38 @@ We focus on the squared Fisher distance~\cite{skovgaard1984riemannian}, which is
 % \end{equation*}
 %
 % Given $\dataMat\in\realSpace^{\nfeatures\times\nsamples}$ and a deterministic $\point\in\SPDman$, the estimator $\RMTdistSCMdeter(\point,\SCM)$ of $\delta^2(\point,\Cov)$ is
-In the present work, we exploit the estimator $\RMTdistSCMdeter$ between some random matrix and a deterministic matrix in $\SPDman$.
-Given $\dataMat\in\realSpace^{\nfeatures\times\nsamples}$ with SCM $\SCM$ and a deterministic $\point\in\SPDman$, the correction advocated in~\cite{couillet2019random} is
-\begin{multline}
-    \RMTdistSCMdeter(\point,\SCM) = \frac1{2\nfeatures}\sum_{i=1}^{\nfeatures} \log^2(\lambda_i)
-    + \frac1{\nfeatures}\sum_{i=1}^{\nfeatures} \log(\lambda_i)
-    \\
-    - (\VEC{\lambda}-\VEC{\zeta})^T[ \frac1{\nfeatures}\MAT{Q}\onevec +\frac{1-\nc}{\nc}\VEC{q} ]
-    - \frac{1-\nc}{2\nc}\log^2(1-\nc),
-\label{eq:RMT_Fisher_SCM_deterministic}
-\end{multline}
-where $\nc=\nicefrac{\nfeatures}{\nsamples}$;
-$\VEC{\lambda}$ and $\VEC{\zeta}$ contain the eigenvalues of $\point^{-1}\SCM$ and $\eigsMat-\frac{\sqrt{\VEC{\lambda}}\sqrt{\VEC{\lambda}}^T}{\nsamples}$, with $\eigsMat=\diag(\VEC{\lambda})$;
-$\VEC{q}\in\realSpace^{\nfeatures}$ such that $q_i=\frac{\log(\lambda_i)}{\lambda_i}$;
-and $\MAT{Q}\in\realSpace^{\nfeatures\times\nfeatures}$ is the matrix such that
-\begin{equation*}
-    Q_{ij} = \left\{ 
-    \begin{matrix}
-        \frac{\lambda_i\log\left(\frac{\lambda_i}{\lambda_j}\right) - (\lambda_i-\lambda_j)}{(\lambda_i-\lambda_j)^2}, & i\neq j
+In the present work, we exploit the estimator $\RMTdistSCMdeter$ between some random matrix and a deterministic matrix in $\SPDman$ derived in~\cite{couillet2019random}.
+It is provided in Theorem~\ref{thm:rmt_dist}.
+%
+\begin{theorem}[RMT corrected squared Fisher distance from~\cite{couillet2019random}]
+    Given $\dataMat\in\realSpace^{\nfeatures\times\nsamples}$ ($\nfeatures>\nsamples$) with SCM $\SCM$ and a deterministic $\point\in\SPDman$, the RMT correction of the squared Fisher distance~\eqref{eq:Fisher_dist} is
+    \begin{multline}
+        \RMTdistSCMdeter(\point,\SCM) = \frac1{2\nfeatures}\sum_{i=1}^{\nfeatures} \log^2(\lambda_i)
+        + \frac1{\nfeatures}\sum_{i=1}^{\nfeatures} \log(\lambda_i)
         \\
-        \frac1{2\lambda_i}, & i=j
-    \end{matrix}
-    \right. .
-\end{equation*}
+        - (\VEC{\lambda}-\VEC{\zeta})^T[ \frac1{\nfeatures}\MAT{Q}\onevec +\frac{1-\nc}{\nc}\VEC{q} ]
+        - \frac{1-\nc}{2\nc}\log^2(1-\nc),
+    \label{eq:RMT_Fisher_SCM_deterministic}
+    \end{multline}
+    where $\nc=\nicefrac{\nfeatures}{\nsamples}<1$;
+    $\VEC{\lambda}$ and $\VEC{\zeta}$ contain the eigenvalues of $\point^{-1}\SCM$ and $\eigsMat-\frac{\sqrt{\VEC{\lambda}}\sqrt{\VEC{\lambda}}^T}{\nsamples}$, with $\eigsMat=\diag(\VEC{\lambda})$;
+    $\VEC{q}\in\realSpace^{\nfeatures}$ such that $q_i=\frac{\log(\lambda_i)}{\lambda_i}$;
+    and $\MAT{Q}\in\realSpace^{\nfeatures\times\nfeatures}$ is the matrix such that
+    \begin{equation*}
+        Q_{ij} = \left\{ 
+        \begin{matrix}
+            \frac{\lambda_i\log\left(\frac{\lambda_i}{\lambda_j}\right) - (\lambda_i-\lambda_j)}{(\lambda_i-\lambda_j)^2}, & i\neq j
+            \\
+            \frac1{2\lambda_i}, & i=j
+        \end{matrix}
+        \right. .
+    \end{equation*}
+\label{thm:rmt_dist}
+\end{theorem}
+
+
+
+
 
 
 
@@ -348,7 +387,7 @@ The goal is to solve the optimization problem
     \argmin_{\point\in\SPDman} \quad f(\point).
 \end{equation*}
 To do so, the differential structure of $\SPDman$ is exploited.
-Since $\SPDman$ is open in $\SymSpace$, the tangent space at any point $\point\in\SPDman$ can be identified to $\SymSpace$.
+Since $\SPDman$ is open in the space of symmetric matrices $\SymSpace$, the tangent space at any point $\point\in\SPDman$ can be identified to $\SymSpace$.
 %
 The next step is to equip $\SPDman$ with a Riemannian metric.
 The choice that appears natural in our case is the Fisher information metric of the normal distribution, which yields~\eqref{eq:Fisher_dist}. 
@@ -467,9 +506,9 @@ In this scenario, the covariance estimator $\CovRMTdist$ is obtained by minimizi
 To solve the optimization problem, we resort to Riemannian optimization on $\SPDman$ with the tools presented in Section~\ref{sec:preliminaries:Ropt}.
 To be able to implement the Riemannian gradient descent, all we need is the Riemannian gradient of $f:\point\mapsto\RMTdistSCMdeter(\point,\SCM)$.
 
-The objective $f$ is a function of the eigenvalues of $\point^{-1}\SCM$, \emph{i.e.}, $f(\point)=g(\eigsMat)$, where $\eigsMat\in\DPDman$ contain the eigenvalues of $\point^{-1}\SCM$ (or equivalently $\point^{\nicefrac{-1}{2}}\SCM\point^{\nicefrac{-1}{2}}$ to keep a symmetric matrix).
+The objective $f$ is a function of the eigenvalues of $\point^{-1}\SCM$, \emph{i.e.}, $f(\point)=g(\eigsMat)$, where $\eigsMat\in\DPDman$  (manifold of positive definite diagonal matrices) contain the eigenvalues of $\point^{-1}\SCM$ (or equivalently $\point^{\nicefrac{-1}{2}}\SCM\point^{\nicefrac{-1}{2}}$ to keep a symmetric matrix).
 First, in Proposition~\ref{prop:Rgrad_eigsfun}, the Riemannian gradient $\grad f(\point)$ of $f$ in $\SPDman$ is given as a function of the Riemannian gradient $\grad g(\eigsMat)$ of $g$ in $\DPDman$, also equipped with metric~\eqref{eq:Fisher_metric}.
-As for $\SPDman$, $\grad g(\eigsMat)$ is the only element of $\DiagSpace$ such that, for all $\tangentVector\in\DiagSpace$,
+As for $\SPDman$, $\grad g(\eigsMat)$ is the only element of the space of diagonal matrices $\DiagSpace$ such that, for all $\tangentVector\in\DiagSpace$,
 %\begin{equation*}
     $\diff g(\eigsMat)[\tangentVector] = \tr(\eigsMat^{-1}\grad g(\eigsMat)\eigsMat^{-1}\tangentVector).$
 %\end{equation*}
@@ -495,12 +534,13 @@ It is provided in Proposition~\ref{prop:RMT_Fisher_SCM_deterministic_grad}.
     Let $g:\DPDman\to\realSpace$ the function such that $g(\eigsMat)=\RMTdistSCMdeter(\point,\SCM)$, with $\RMTdistSCMdeter$ defined in~\eqref{eq:RMT_Fisher_SCM_deterministic} and $\eigsMat$ the eigenvalues of $\point^{\nicefrac{-1}{2}}\SCM\point^{\nicefrac{-1}{2}}$.
     It follows that
     \begin{multline*}
-        \grad g(\eigsMat) = \frac1{\nfeatures}[\log(\eigsMat)+\eye]\eigsMat
+        \hspace*{-8pt}
+        \grad g(\eigsMat) = \frac1{\nfeatures}[\logm(\eigsMat)+\eye]\eigsMat
         - \eigsMat^2[\MAT{\Delta} + \diag(\MAT{A}\MAT{V}\MAT{\Delta}\MAT{V}^T)]
         \\
         - \frac1{\nfeatures}\eigsMat^2\diag(\MAT{B}\onevec(\VEC{\lambda}-\VEC{\zeta})^T + \onevec(\VEC{\lambda}-\VEC{\zeta})^T\MAT{C})
         \\
-        -\frac{1-\nc}{\nc}(\eye-\log(\eigsMat))(\eigsMat-\diag(\VEC{\zeta})),
+        -\frac{1-\nc}{\nc}(\eye-\logm(\eigsMat))(\eigsMat-\diag(\VEC{\zeta})),
     \end{multline*}
     where $\VEC{\zeta}$ and $\MAT{V}$ are the eigenvalues and eigenvectors of $\eigsMat-\frac{\sqrt{\VEC{\lambda}}\sqrt{\VEC{\lambda}}^T}{\nsamples}$; $\MAT{\Delta}=\diag(\frac1{\nfeatures}\MAT{Q}\onevec+\frac{(1-\nc)}{\nc}\VEC{q})$, with $\MAT{Q}$ and $\VEC{q}$ defined in~\eqref{eq:RMT_Fisher_SCM_deterministic}; and $\MAT{A}$, $\MAT{B}$ and $\MAT{C}$ are the matrices such that
     \begin{equation*}
@@ -650,8 +690,8 @@ The objective function $h:\point\mapsto\frac1{\nmatrices}\sum_k\RMTdistSCMdeter(
 Hence, our hope is to significantly improve the estimation of the true mean $\Mean$ as compared to two steps procedures that compute the Fréchet mean of some covariance estimators.
 %
 \begin{remark}
-    The SCM $\SCM_k$ asymptotically converges to the true covariance $\Cov_k$ as the number of samples $\nsamples$ grows.
-    Thus, the usual cost function $\point\mapsto\frac1{\nmatrices}\sum_k\delta^2(\point,\SCM_k)$ well approximates $\point\mapsto\frac1{\nmatrices}\sum_k\delta^2(\point,\Cov_k)$ only when $\nsamples$ is large enough.
+    When $\nsamples$ is large enough, the usual cost function $\point\mapsto\frac1{\nmatrices}\sum_k\delta^2(\point,\SCM_k)$ well approximates $\point\mapsto\frac1{\nmatrices}\sum_k\delta^2(\point,\Cov_k)$ since the SCM $\SCM_k$ asymptotically converges to the true covariance $\Cov_k$.
+    It is no longer true for a small $\nsamples$.
     In comparison, our proposed cost function appears advantageous for a wider range of number of samples $\nsamples$.
 \end{remark}
 
@@ -692,7 +732,7 @@ Our proposed method is summarized in Algorithm~\ref{algo:RMTMean}.
         \STATE {\bfseries Input:}
             data $\{\dataMat_k\}_{k=1}^{\nmatrices}$ in $\realSpace^{\nfeatures\times\nsamples}$,
             initial guess $\point_0\in\SPDman$,
-            tolerance $\alpha>0$,
+            tolerance $\varepsilon>0$,
             maximum iterations $\ell_{\textup{max}}$
         \FOR{$k$ {\bfseries in} $\llbracket1,\nmatrices\rrbracket$}
         \STATE Compute SCM $\SCM_k=\frac1{\nsamples}\dataMat_k\dataMat_k^T$
@@ -813,14 +853,54 @@ As prescribed in~\cite{arthur2007k} in the Euclidean case, we consider using sev
     \end{algorithmic}
 \end{algorithm}
 
-\subsection{Simulations summary and concluding remarks}
+\subsection{Simulations}
 \label{sec:mean:simu}
 
-Comprehensive simulations on mean estimation are detailed in Appendix ~\ref{app:simu_RMTCov}. Here, only a brief overview and key conclusions are presented due to space constraints. The process begins with generating a random mean, followed by simulating a set of covariance matrices whose Fréchet mean precisely matches the randomly generated mean. Subsequently, data are sampled randomly from these covariance matrices. We benchmark various methods against our proposed RMT-based mean presented in~\ref{algo:RMTMean}.
-These methods involve a two-step process where we first compute covariance estimators of the data and then the usual Fréchet mean over $\SPDman$.
-Again, we consider the SCM and the linear and non-linear Ledoit-Wolf estimators.
+\begin{figure*}
+    \input{Figures/mse_mean}
+    \caption{Mean square error (MSE) over 1000 trials of the estimated Fréchet mean towards the true mean matrix with respect to the number of samples $\nsamples$ (left) and number of matrices $\nmatrices$ (right).
+    Parameters are $\nfeatures=64$, $\nmatrices=10$ on the left and $\nsamples=128$ on the right.
+    Lines correspond to the medians while filled areas correspond to the $5^{\textup{th}}$ and $95^{\textup{th}}$ quantiles.}
+    \label{fig:mse_mean}
+\end{figure*}
 
-Our findings indicate a distinct advantage of our proposed RMT-based method over the others across all scenarios examined, particularly when analyzing the impact of sample size $\nsamples$ and the number of matrices $\nmatrices$. The RMT-based approach demonstrates superior performance, especially when the sample size is moderately limited and the number of matrices  $\nmatrices$ is large.%, highlighting its robustness and efficiency in such conditions.
+This section contains simulations conducted to evaluate the performance of our proposed RMT based method as compared to state-of-the-art algorithms.
+%
+The experimental setup is as follows.
+A center $\Mean=\MAT{U}\MAT{\Delta}\MAT{U}^T\in\SPDman$ is generated, where $\MAT{U}$ is uniformly drawn on $\mathcal{O}_{\nfeatures}$ (orthogonal group), and $\MAT{\Delta}$ is randomly drawn on $\DPDman$.
+Maximal and minimal diagonal entries of $\MAT{\Delta}$ are set to $\sqrt{a}$ and $\nicefrac{1}{\sqrt{a}}$, where $a=100$ is the condition number.
+Remaining non-zero elements are uniformly drawn in-between.
+%
+Then, $\nmatrices$ matrices $\{\Cov_k\}$ whose Fréchet mean is $\Mean$ are randomly generated.
+To do so, given $k$, $\frac{\nfeatures(\nfeatures+1)}{2}$ values are drawn from $\mathcal{N}(0,\sigma^2)$, with $\sigma^2=0.1$.
+These are used to canonically construct $\MAT{S}_k\in\SymSpace$.
+A set of $\nmatrices$ centered symmetric matrices $\{\tangentVector_k\}$ is obtained by canceling the mean of the $\MAT{S}_k$'s, \emph{i.e.}, $\tangentVector_k = \MAT{S}_k - \frac1{\nmatrices}\sum_{k'}\MAT{S}_{k'}$.
+Hence, $\frac1{K}\sum_k\tangentVector_k=\MAT{0}$.
+Finally, $\Cov_k=\Mean^{\nicefrac12}\expm(\tangentVector_k)\Mean^{\nicefrac12}$, where $\expm(\cdot)$ denotes the matrix exponential.
+%
+After that, we generate $\nmatrices$ matrices $\dataMat_k$ in $\realSpace^{\nfeatures\times\nsamples}$ such that each column of $\dataMat_k$ is drawn from $\mathcal{N}(\VEC{0},\Cov_k)$.
+
+To estimate $\Mean$ from $\{\dataMat_k\}$, several methods are considered.
+First, two steps methods are employed.
+They consist in estimating covariance matrices and then their usual Fréchet mean.
+The mean resulting from the SCM estimator is denoted $\MeanSCM$.
+The ones obtained after employing the linear and non-linear Ledoit-Wolf estimators are denoted $\MeanLinearLW$ and $\MeanNonLinearLW$, respectively.
+These are compared to our proposed RMT based mean $\MeanRMT$ obtained with Algorithm~\ref{algo:RMTMean}.
+To measure performance, we use the squared Fisher distance~\eqref{eq:Fisher_dist} between the true mean and its estimator.
+
+Results are presented in Figure~\ref{fig:mse_mean}.
+These indicate a distinct advantage of our proposed RMT-based method over the others across all examined scenarios.
+One can observe that when the number of samples $\nsamples$ grows, $\MeanSCM$ and $\MeanNonLinearLW$ slowly catch up with $\MeanRMT$.
+When $\nsamples$ is fixed (moderately low) and the number of matrices $\nmatrices$ increases, $\MeanRMT$ is the only one that strongly improves.
+%
+In conclusion, our RMT-based method demonstrates superior performance, especially when the sample size $\nsamples$ is moderately limited and the number of matrices $\nmatrices$ is large.
+
+
+% Comprehensive simulations on mean estimation are detailed in Appendix ~\ref{app:simu_RMTCov}. Here, only a brief overview and key conclusions are presented due to space constraints. The process begins with generating a random mean, followed by simulating a set of covariance matrices whose Fréchet mean precisely matches the randomly generated mean. Subsequently, data are sampled randomly from these covariance matrices. We benchmark various methods against our proposed RMT-based mean presented in~\ref{algo:RMTMean}.
+% These methods involve a two-step process where we first compute covariance estimators of the data and then the usual Fréchet mean over $\SPDman$.
+% Again, we consider the SCM and the linear and non-linear Ledoit-Wolf estimators.
+
+% Our findings indicate a distinct advantage of our proposed RMT-based method over the others across all scenarios examined, particularly when analyzing the impact of sample size $\nsamples$ and the number of matrices $\nmatrices$. The RMT-based approach demonstrates superior performance, especially when the sample size is moderately limited and the number of matrices  $\nmatrices$ is large.%, highlighting its robustness and efficiency in such conditions.
 
 % In this case, our proposed method clearly outperforms the others in all considered scenario (we study the effects of $\nsamples$ and $\nmatrices$).
 % Our conclusion is that when the available amount of samples $\nsamples$ is somewhat limited, our proposed RMT based method is very advantageous as compared to the others, especially if $\nmatrices$ is large.
@@ -919,19 +999,19 @@ Our findings indicate a distinct advantage of our proposed RMT-based method over
 %     \label{tab:my_label}
 % \end{table*}
 
-\begin{table}
+\begin{table*}[t]
     \centering
     \begin{tabular}{rcccc}
         & SCM & LW & LW-NL & RMT \\
         \cline{2-5}
-        GrosseWentrup09 & 0.632 & 0.624 & $\times$ & {\bf 0.638} \\
-        Schirmeister17 & 0.597 & 0.483 & 0.561 & {\bf 0.603} \\
-        Cho17 & 0.615 & 0.609 & 0.601 & {\bf 0.622} \\
-        Lee19 & {\bf 0.666} & 0.642 & 0.626 & 0.66 \\
+        GrosseWentrup09 & 0.632 $\pm$ 0.0867& 0.624 $\pm$ 0.0829 & $\times$ & {\bf 0.638 $\pm$ 0.0917} \\
+        Schirmeister17 & 0.597 $\pm$  0.139 & 0.483 $\pm$ 0.0958 & 0.561 $\pm$ 0.120 & {\bf 0.603 $\pm$ 0.120} \\
+        Cho17 & 0.615 $\pm$ 0.158 & 0.609 $\pm$ 0.136 & 0.601 $\pm$ 0.131 & {\bf 0.622 $\pm$ 0.158} \\
+        Lee19 & {\bf 0.666 $\pm$ 0.138} & 0.642 $\pm$ 0.130 & 0.626 $\pm$ 0.126 & 0.66 $\pm$ 0.137\\
     \end{tabular}
     \caption{Classification results on EEG motor imaging data.}
     \label{tab:eeg_mi}
-\end{table}
+\end{table*}
 
 \begin{table*}[t]
 \centering
@@ -957,8 +1037,8 @@ KSC                           & 5             & 5$\times$5   & 0.263           &
 \label{tab:hyperspectral}
 \end{table*}
 
-To assess the practical relevance of the proposed RMT-based mean estimation method, we applied it to two real-world scenarios:
-(\emph{i}) electroencephalography (EEG) classification using Nearest Centroid classifiers and (\emph{ii}) Clustering of hyperspectral images using K-Means algorithms.
+To assess the practical relevance of the proposed RMT-based mean estimation method, two real-world scenarios are considered:
+(\emph{i}) electroencephalography (EEG) classification using Nearest Centroid classifiers and (\emph{ii}) clustering of hyperspectral images using K-Means algorithms.
 Various strategies were implemented for mean computation and distance. Specifically, for mean estimation, we consider two step strategies where we first estimate covariances and then compute their generic Fréchet mean associated with~\eqref{eq:Fisher_dist}.
 As before, we consider the SCM, linear Ledoit-Wolf (LW) and non-linear Ledoit-Wolf (LW-NL) estimators.
 These methods were then benchmarked against our proposed RMT-based Nearest Centroid and K-Means algorithms, as detailed in Section~\ref{sec:mean:learning}. The development and evaluation of these methods were conducted in Python. Specifically, SCM and LW implementations were sourced from the scikit-learn library~\cite{pedregosa2018scikitlearn}, while LW-NL comes from scikit-RMT\footnote{\url{https://scikit-rmt.readthedocs.io/}}. The conventional Fréchet means, standard Nearest Centroid and K-Means algorithms were taken from the pyRiemann library~\cite{alexandre_barachant_2023_8059038}.
@@ -983,7 +1063,7 @@ Lee2019, where  $\nclasses=2$, $\nfeatures=62$, signals resampled to $100$Hz, tr
 % Hence, RMT is by far the most reliable regularized method on these data.
 % However, the small difference with SCM does not make RMT worth the effort for this application.
 
-The outcomes are summarized in Table~\ref{tab:eeg_mi}. An analysis of the results reveals that the SCM and RMT methods demonstrate comparable levels of performance across all datasets, with RMT achieving marginal enhancements in three out of the four datasets. Conversely, the accuracy rates for both LW and LW-NL are notably lower. Specifically, in the case of GrosseWentrup2009, the LW-NL method encountered issues, failing to produce SPD (Symmetric Positive Definite) matrices as required, rendering it non-functional. This observation underscores the superior reliability of the RMT method as a regularization technique for these datasets. However, given the minimal performance gap between RMT and SCM, the incremental benefit of RMT may not justify the additional complexity for this particular application.
+The outcomes are summarized in Table~\ref{tab:eeg_mi}. An analysis of the results reveals that the SCM and RMT methods demonstrate comparable levels of performance across all datasets, with RMT achieving marginal enhancements in three out of the four datasets. Conversely, the accuracy rates for both LW and LW-NL are notably lower. Specifically, in the case of GrosseWentrup2009, the LW-NL method encountered issues, failing to produce SPD matrices as required, rendering it non-functional. This observation underscores the superior reliability of the RMT method as a regularization technique for these datasets. However, given the minimal performance gap between RMT and SCM, the incremental benefit of RMT may not justify the additional complexity for this particular application.
 
 \subsection{Hyperspectral data}
 
@@ -997,7 +1077,7 @@ Our second experiment with real data delves into the clustering of hyperspectral
 }.
  These datasets are inherently diverse, characterized by a unique number of bands and classes. They also feature annotated ground truths. Certain zones labeled as "undefined" are considered unreliable and hence are omitted from the accuracy calculations of the clustering methods. Nevertheless, these zones are included during the clustering phase to ensure realistic evaluation. 
 
- Data preprocessing involves three main steps: normalizing data by subtracting the image's global mean, employing Principal Component Analysis (PCA) to select a set number of channels (p) as per prior research~\cite{9627641}, and using a sliding window with overlap for data sampling around each pixel. We excluded the LW-NL method due to numerical instability. The K-means algorithm, capped at $100$ iterations with early stopping at a $10^{-4}$ tolerance, concludes with a linear assignment optimization to align the clustered image with ground truth, optimizing classification accuracy.
+ Data preprocessing involves three main steps: normalizing data by subtracting the image's global mean, employing Principal Component Analysis (PCA) to select a set number of channels $\nfeatures$ as per prior research~\cite{9627641}, and using a sliding window with overlap for data sampling around each pixel. We excluded the LW-NL method due to numerical instability. The K-means algorithm, capped at $100$ iterations with early stopping at a $10^{-4}$ tolerance, concludes with a linear assignment optimization to align the clustered image with ground truth, optimizing classification accuracy.
  
 % The data preprocessing involves a structured three-step approach. Initially, we normalize the data by subtracting the global mean of the image. Next, we utilize Principal Component Analysis (PCA) to maintain a predetermined number of channels $\nfeatures$. This step is vital as prior research~\cite{9627641} indicates that a limited number of principal components can effectively represent these datasets. Finally, we implement a sliding window technique with overlap to gather data samples around each pixel for clustering. Due to challenges in achieving numerical stability, we exclude the method based on LW-NL from our experiments. The K-means algorithm is configured with a cap of $100$ iterations, complemented by an early stopping mechanism activated by a tolerance threshold of $10^{-4}$. After clustering, we align the segmented image with the ground truth classes by executing a linear assignment optimization, aiming to maximize the classification accuracy.
 
@@ -1023,6 +1103,35 @@ The results, detailed in Table~\ref{tab:hyperspectral}, evaluate classification 
 
 
 
+\subsection{Discussion}
+The first thing that we notice on these real data learning experiments is the is the lower performance of the methods associated with the linear and non-linear Ledoit-Wolf estimators.
+%
+For LW, this is in accordance with our simulations.
+It is likely that this is because the true covariance matrices are in fact quite far from the identity matrix.
+So, linearly shrinking toward the identity does not improve estimation in this case.
+%
+For LW-NL, this is more surprising.
+On these real data, LW-NL has proved itself numerically unstable and unable to consistently provide SPD matrices.
+
+Concerning our RMT-based method, we observe that:
+\begin{itemize}
+    \item When the number of samples $\nsamples$ is sufficiently big as compared to the dimension $\nfeatures$, our proposed RMT mean becomes equivalent to the usual Fisher mean.
+    In this case, one can expect to obtain very similar results with our method as compared to the method associated with the SCM.
+    This is indeed what we observe with EEG data, for which a rather large $\nsamples$ is available (and needed to capture the information contained in the data).
+    \item When $\nsamples$ is comparable to $\nfeatures$, then our performance depends on the number of matrices $\nmatrices$ available to compute the mean:
+    \begin{itemize}
+        \item[$\circ$] when $\nmatrices$ is very small, the issue is that there is a clear statistical dependence introduced between the estimated mean and the data at hand.
+        In this case, the RMT distance estimator can become irrelevant and our mean is not very satisfying.
+        This is the worst case scenario for our method and its main limitation.
+        However, in our simulations, a small number of matrices $\nmatrices$ is enough for our method to be competitive.
+        %
+        \item[$\circ$] when $\nmatrices$ becomes big, this is where our estimator performs very well.
+        In fact, on simulated data, our RMT estimator appears to converge to the true mean as $\nmatrices$ grows while other methods do not.
+        For the real hyperspectral data that we consider, we are exactly in this scenario and the performance we obtain corresponds to our simulations, \emph{i.e.}, our method performs really well as compared to other methods.
+    \end{itemize}
+\end{itemize}
+
+
 \section{Conclusions and perspectives}
 \label{sec:conclusion}
 
@@ -1030,9 +1139,15 @@ The results, detailed in Table~\ref{tab:hyperspectral}, evaluate classification 
 
 The first part of this paper presents a refined regularized covariance estimator, building upon the corrected squared distance outlined in \cite{couillet2019random}. While this work aligns closely with \cite{tiomoko2019random}, it introduces subtle yet noteworthy enhancements, including a more comprehensive treatment of matrix independence and a new stopping criterion rooted in statistical principles. The primary contribution, however, is the development of a novel Fréchet mean algorithm tailored for random matrices under conditions of low sample support, utilizing a Riemannian gradient on the SPD matrix manifold. When applied to Nearest Centroid classifiers and K-means clustering, this new method demonstrates great potential. It appears very advantageous when dealing with a large number of matrices per class, offering a big improvement over traditional methods in this case.
 
-\section*{Impact Statements}
 
+
+\section*{Acknowledgement}
+This research was supported by DATAIA Convergence Institute as part of the ``Programme d’Investissement d’Avenir", (ANR-17-CONV-0003) operated by Laboratoire des Signaux et Systèmes.
+
+
+\section*{Impact Statement}
 This paper presents work whose goal is to advance the field of Machine Learning. There are many potential societal consequences of our work, none which we feel must be specifically highlighted here.
+
 
 \bibliographystyle{icml2024}
 \bibliography{references.bib}

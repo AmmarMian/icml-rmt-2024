@@ -197,24 +197,29 @@ if __name__ == "__main__":
     # We ignore the NaNs
     df_mean = df.groupby(["method", "iteration"]).mean()
     df_5 = df.groupby(["method", "iteration"]).quantile(0.05)
+    df_50 = df.groupby(["method", "iteration"]).quantile(0.5)
     df_95 = df.groupby(["method", "iteration"]).quantile(0.95)
 
     df_mean = df_mean.unstack(level=1)
     df_5 = df_5.unstack(level=1)
+    df_50 = df_50.unstack(level=1)
     df_95 = df_95.unstack(level=1)
     logging.info("Results formatted")
     logging.info(f"Mean:\n{df_mean}")
     logging.info(f"5th percentile:\n{df_5}")
+    logging.info(f"50th percentile:\n{df_50}")
     logging.info(f"95th percentile:\n{df_95}")
 
     # Save results
     logging.info("Saving results")
     df_mean.to_csv(f"{os.path.join(config['results_path'], 'mean.csv')}")
     df_5.to_csv(f"{os.path.join(config['results_path'], '5.csv')}")
+    df_50.to_csv(f"{os.path.join(config['results_path'], '50.csv')}")
     df_95.to_csv(f"{os.path.join(config['results_path'], '95.csv')}")
     string = "Results saved in:\n" +\
             f"{os.path.join(config['results_path'], 'mean.csv')}\n" +\
             f"{os.path.join(config['results_path'], '5.csv')}\n" +\
+            f"{os.path.join(config['results_path'], '50.csv')}\n" +\
             f"{os.path.join(config['results_path'], '95.csv')}"
     logging.info(string)
 
@@ -223,8 +228,8 @@ if __name__ == "__main__":
     fig, ax = plt.subplots(figsize=(9,6))
     colors = ["b", "g", "r", "c", "m"]
     for i, method in enumerate(estimation_methods.keys()):
-        ax.plot(list(df_mean.loc[method]), label=method, color=colors[i])
-        ax.fill_between([x[1] for x in list(df_5.loc[method].index)],
+        ax.plot(list(df_50.loc[method]), label=method, color=colors[i])
+        ax.fill_between([x[1] for x in list(df_50.loc[method].index)],
                     list(df_5.loc[method]),
                     list(df_95.loc[method]),
                     alpha=0.3, color=colors[i])

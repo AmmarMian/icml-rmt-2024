@@ -188,15 +188,19 @@ if __name__ == "__main__":
     df.sort_values(by=['n_features', 'n_matrices', 'n_samples'])
     df_mean = df.groupby(["n_features", "n_matrices", "n_samples"]).mean()
     df_5 = df.groupby(["n_features", "n_matrices", "n_samples"]).quantile(0.05)
+    df_50 = df.groupby(["n_features", "n_matrices", "n_samples"]).quantile(0.5)
     df_95 = df.groupby(["n_features", "n_matrices", "n_samples"]).quantile(0.95)
     logging.info("Results formatted")
     mean_string = "Mean:\n" + df_mean.to_string(float_format="{:.2f}".format)
     quantile_5_string = "5th percentile:\n" + \
             df_5.to_string(float_format="{:.2f}".format)
+    quantile_50_string = "50th percentile:\n" + \
+            df_50.to_string(float_format="{:.2f}".format)
     quantile_95_string = "95th percentile:\n" + \
             df_95.to_string(float_format="{:.2f}".format)
     logging.info(mean_string)
     logging.info(quantile_5_string)
+    logging.info(quantile_50_string)
     logging.info(quantile_95_string)
 
     # Plotting
@@ -212,13 +216,15 @@ if __name__ == "__main__":
                                   f"{grid_parameters[z_index]} == {z}")
         data_5 = df_5.query(f"{grid_parameters[y_index]} == {y} & " +\
                 f"{grid_parameters[z_index]} == {z}")
+        data_50 = df_50.query(f"{grid_parameters[y_index]} == {y} & " +\
+                f"{grid_parameters[z_index]} == {z}")
         data_95 = df_95.query(f"{grid_parameters[y_index]} == {y} & " +\
                 f"{grid_parameters[z_index]} == {z}")
-        x_values = [index[x_index] for index in data_mean.index]
+        x_values = [index[x_index] for index in data_50.index]
         if len(x_values) > 0:
             fig, ax = plt.subplots(figsize=(9,6))
             for i, method in enumerate(estimation_methods.keys()):
-                ax.plot(x_values, list(data_mean[method]), label=method, color=colors[i])
+                ax.plot(x_values, list(data_50[method]), label=method, color=colors[i])
                 ax.fill_between(x_values,
                                 list(data_5[method]),
                                 list(data_95[method]),

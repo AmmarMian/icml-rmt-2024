@@ -1,0 +1,104 @@
+\begin{center}
+\begin{tikzpicture}
+
+    \begin{semilogxaxis}[
+        width  =0.5\linewidth,
+        height =5cm,
+        at     ={(0,0)},
+        %
+        xlabel={Number of samples $\nsamples$},
+        xmin=60, xmax=350,
+        minor xtick={70,80,90,200,300},
+        xtick={100,200, 300},
+        xticklabels={
+          \(\textstyle {10^{2}}\),
+          \(\textstyle {2\times 10^{2}}\),
+          \(\textstyle {3\times 10^{2}}\),
+        },
+        ylabel={MSE~(dB)},
+        ymin=-4, ymax=40,
+        %
+        tick label style={font=\footnotesize},
+        %
+        legend cell align={left},
+        legend columns=4, 
+        legend style={draw=none,fill=none, font=\scriptsize, at={(0.04, 0.01)},anchor=south west, /tikz/column 2/.style={column sep=5pt,}},
+        legend image code/.code={\draw [#1] (0cm,0cm) -- (0.35cm,0cm);},
+    ]
+        \addplot[color=myblue!20,line width=0.1pt, forget plot, name path=A] table [x=n_samples,y expr = 20*log10(\thisrow{SCM}),col sep=comma] {./Figures/mse_nsamples/5.csv};
+        \addplot[color=myblue!20,line width=0.1pt, forget plot, name path=B] table [x=n_samples,y expr = 20*log10(\thisrow{SCM}),col sep=comma] {./Figures/mse_nsamples/95.csv};
+        \addplot[myblue!20, forget plot] fill between[of=A and B];
+
+        \addplot[color=myorange!20,line width=0.1pt, forget plot, name path=A] table [x=n_samples,y expr = 20*log10(\thisrow{LW_linear}),col sep=comma] {./Figures/mse_nsamples/5.csv};
+        \addplot[color=myorange!20,line width=0.1pt, forget plot, name path=B] table [x=n_samples,y expr = 20*log10(\thisrow{LW_linear}),col sep=comma] {./Figures/mse_nsamples/95.csv};
+        \addplot[myorange!20, forget plot] fill between[of=A and B];
+
+        \addplot[color=myred!20,line width=0.1pt, forget plot, name path=A] table [x=n_samples,y expr = 20*log10(\thisrow{LW_nonlinear}),col sep=comma] {./Figures/mse_nsamples/5.csv};
+        \addplot[color=myred!20,line width=0.1pt, forget plot, name path=B] table [x=n_samples,y expr = 20*log10(\thisrow{LW_nonlinear}),col sep=comma] {./Figures/mse_nsamples/95.csv};
+        \addplot[myred!20, forget plot] fill between[of=A and B];
+
+        \addplot[color=darkgray!20,line width=0.1pt, forget plot, name path=A] table [x=n_samples,y expr = 20*log10(\thisrow{RMT}),col sep=comma] {./Figures/mse_nsamples/5.csv};
+        \addplot[color=darkgray!20,line width=0.1pt, forget plot, name path=B] table [x=n_samples,y expr = 20*log10(\thisrow{RMT}),col sep=comma] {./Figures/mse_nsamples/95.csv};
+        \addplot[darkgray!20, forget plot] fill between[of=A and B];
+        
+        \addplot[color=myblue,line width=0.5pt] table [x=n_samples,y expr = 20*log10(\thisrow{SCM}),col sep=comma] {./Figures/mse_nsamples/mean.csv};
+        \addlegendentry{SCM};
+
+        \addplot[color=myorange,line width=0.5pt] table [x=n_samples,y expr = 20*log10(\thisrow{LW_linear}),col sep=comma] {./Figures/mse_nsamples/mean.csv};
+        \addlegendentry{LW};
+
+        \addplot[color=myred,line width=0.5pt] table [x=n_samples,y expr = 20*log10(\thisrow{LW_nonlinear}),col sep=comma] {./Figures/mse_nsamples/mean.csv};
+        \addlegendentry{LW-NL};
+
+        \addplot[color=darkgray,line width=0.5pt] table [x=n_samples,y expr = 20*log10(\thisrow{RMT}),col sep=comma] {./Figures/mse_nsamples/mean.csv};
+        \addlegendentry{RMT};
+    \end{semilogxaxis}
+    
+    
+    \begin{semilogxaxis}[
+        width  =0.5\linewidth,
+        height =5cm,
+        at     ={(0.515\linewidth,0)},
+        %
+        xlabel={Number of matrices $\nmatrices$},
+        ylabel={MSE~(dB)},
+        tick label style={font=\footnotesize},
+        %
+        legend cell align={left},
+        legend columns=4, 
+        legend style={draw=none,fill=none, font=\scriptsize, at={(0.04, 0.01)},anchor=south west, /tikz/column 2/.style={column sep=5pt,}},
+        legend image code/.code={\draw [#1] (0cm,0cm) -- (0.35cm,0cm);},
+    ]
+
+        \addplot[color=myblue!20,line width=0.1pt, forget plot, name path=A] table [x=n_matrices,y expr = 20*log10(\thisrow{SCM}),col sep=comma] {./Figures/mse_nmatrices/64_128/5.csv};
+        \addplot[color=myblue!20,line width=0.1pt, forget plot, name path=B] table [x=n_matrices,y expr = 20*log10(\thisrow{SCM}),col sep=comma] {./Figures/mse_nmatrices/64_128/95.csv};
+        \addplot[myblue!20, forget plot] fill between[of=A and B];
+
+        \addplot[color=myorange!20,line width=0.1pt, forget plot, name path=A] table [x=n_matrices,y expr = 20*log10(\thisrow{LW_linear}),col sep=comma] {./Figures/mse_nmatrices/64_128/5.csv};
+        \addplot[color=myorange!20,line width=0.1pt, forget plot, name path=B] table [x=n_matrices,y expr = 20*log10(\thisrow{LW_linear}),col sep=comma] {./Figures/mse_nmatrices/64_128/95.csv};
+        \addplot[myorange!20, forget plot] fill between[of=A and B];
+
+        \addplot[color=myred!20,line width=0.1pt, forget plot, name path=A] table [x=n_matrices,y expr = 20*log10(\thisrow{LW_nonlinear}),col sep=comma] {./Figures/mse_nmatrices/64_128/5.csv};
+        \addplot[color=myred!20,line width=0.1pt, forget plot, name path=B] table [x=n_matrices,y expr = 20*log10(\thisrow{LW_nonlinear}),col sep=comma] {./Figures/mse_nmatrices/64_128/95.csv};
+        \addplot[myred!20, forget plot] fill between[of=A and B];
+
+        \addplot[color=darkgray!20,line width=0.1pt, forget plot, name path=A] table [x=n_matrices,y expr = 20*log10(\thisrow{RMT}),col sep=comma] {./Figures/mse_nmatrices/64_128/5.csv};
+        \addplot[color=darkgray!20,line width=0.1pt, forget plot, name path=B] table [x=n_matrices,y expr = 20*log10(\thisrow{RMT}),col sep=comma] {./Figures/mse_nmatrices/64_128/95.csv};
+        \addplot[darkgray!20, forget plot] fill between[of=A and B];
+        
+        \addplot[color=myblue,line width=0.5pt] table [x=n_matrices,y expr = 20*log10(\thisrow{SCM}),col sep=comma] {./Figures/mse_nmatrices/64_128/mean.csv};
+        \addlegendentry{SCM};
+
+        \addplot[color=myorange,line width=0.5pt] table [x=n_matrices,y expr = 20*log10(\thisrow{LW_linear}),col sep=comma] {./Figures/mse_nmatrices/64_128/mean.csv};
+        \addlegendentry{LW};
+
+        \addplot[color=myred,line width=0.5pt] table [x=n_matrices,y expr = 20*log10(\thisrow{LW_nonlinear}),col sep=comma] {./Figures/mse_nmatrices/64_128/mean.csv};
+        \addlegendentry{LW-NL};
+
+        \addplot[color=darkgray,line width=0.5pt] table [x=n_matrices,y expr = 20*log10(\thisrow{RMT}),col sep=comma] {./Figures/mse_nmatrices/64_128/mean.csv};
+        \addlegendentry{RMT};
+    
+    \end{semilogxaxis}
+\end{tikzpicture}
+\vspace*{-15pt}
+\end{center}

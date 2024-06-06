@@ -6,29 +6,33 @@
 Let $f(\point) = g(\eigsMat)$, where we have the eigenvalue decomposition $\point^{\nicefrac{-1}2}\SCM\point^{\nicefrac{-1}2}=\MAT{U}\eigsMat\MAT{U}^T$.
 By definition, we have
 $$
-    \diff f(\point)[\tangentVector] = \tr(\point^{-1}\grad f(\point)\point^{-1}\tangentVector)
-    = \diff g(\eigsMat)[\diff\eigsMat] = \tr(\eigsMat^{-1}\grad g(\eigsMat)\eigsMat^{-1}\diff\eigsMat),
+    \diff f(\point) = \tr(\point^{-1}\grad f(\point)\point^{-1}\diff\point)
+    = \diff g(\eigsMat) = \tr(\eigsMat^{-1}\grad g(\eigsMat)\eigsMat^{-1}\diff\eigsMat).
 $$
-where $\diff\eigsMat=\diag(\MAT{U}^T\diff(\point^{\nicefrac{-1}2}\SCM\point^{\nicefrac{-1}2})\MAT{U})$.
-We further have
-$\diff(\point^{\nicefrac{-1}2}\SCM\point^{\nicefrac{-1}2})=\diff(\point^{\nicefrac{-1}2})\SCM\point^{\nicefrac{-1}2} + \point^{\nicefrac{-1}2}\SCM\diff(\point^{\nicefrac{-1}2})$,
-where
-$\diff(\point^{\nicefrac{-1}2})\point^{\nicefrac{-1}2} + \point^{\nicefrac{-1}2}\diff(\point^{\nicefrac{-1}2}) = \diff(\point^{-1})=-\point^{-1}\tangentVector\point^{-1}$.
-Since $\eigsMat^{-1}\grad g(\eigsMat)\eigsMat^{-1}$ is diagonal, we obtain
+$\diff\eigsMat$ corresponds to the differential of the eigenvalues of $\point^{\nicefrac{-1}2}\SCM\point^{\nicefrac{-1}2}$, which is known to be equal to $\diff\eigsMat=\diag(\MAT{U}^T\diff(\point^{\nicefrac{-1}2}\SCM\point^{\nicefrac{-1}2})\MAT{U})$.
+For any matrix $\MAT{N}$ and diagonal matrix $\MAT{\Delta}$, we have $\tr(\MAT{\Delta}\diag(\MAT{N})) = \tr(\MAT{\Delta}\MAT{N})$.
+Hence, since $\eigsMat^{-1}\grad g(\eigsMat)\eigsMat^{-1}$ is diagonal, we obtain
 $$
      \tr(\eigsMat^{-1}\grad g(\eigsMat)\eigsMat^{-1}\diag(\MAT{U}^T\diff(\point^{\nicefrac{-1}2}\SCM\point^{\nicefrac{-1}2})\MAT{U}))
      =
-     \tr(\eigsMat^{-1}\grad g(\eigsMat)\eigsMat^{-1}\MAT{U}^T\diff(\point^{\nicefrac{-1}2}\SCM\point^{\nicefrac{-1}2})\MAT{U})
+     \tr(\eigsMat^{-1}\grad g(\eigsMat)\eigsMat^{-1}\MAT{U}^T\diff(\point^{\nicefrac{-1}2}\SCM\point^{\nicefrac{-1}2})\MAT{U}).
 $$
+We further have
+$\diff(\point^{\nicefrac{-1}2}\SCM\point^{\nicefrac{-1}2})=\diff(\point^{\nicefrac{-1}2})\SCM\point^{\nicefrac{-1}2} + \point^{\nicefrac{-1}2}\SCM\diff(\point^{\nicefrac{-1}2})$,
+where $\diff(\point^{\nicefrac{-1}2})$ is the unique symmetric solution to the equation
+$\diff(\point^{\nicefrac{-1}2})\point^{\nicefrac{-1}2} + \point^{\nicefrac{-1}2}\diff(\point^{\nicefrac{-1}2}) = \diff(\point^{-1})=-\point^{-1}\diff\point\point^{-1}$.
+%
 Let $\MAT{M}=\point^{\nicefrac{-1}2}\SCM\point^{\nicefrac{-1}2}$ and $\MAT{D} = \eigsMat^{-1}\grad g(\eigsMat)$.
-Since $\MAT{U}\MAT{U}^T=\eye$, we have $\MAT{U}\eigsMat^{-1}\grad g(\eigsMat)\eigsMat^{-1}\MAT{U}^T=\MAT{M}^{-1}\MAT{U}\MAT{D}\MAT{U}^T=\MAT{U}\MAT{D}\MAT{U}^T\MAT{M}^{-1}$ and we obtain
+Since $\MAT{U}\MAT{U}^T=\eye$, we have $\MAT{U}\eigsMat^{-1}\grad g(\eigsMat)\eigsMat^{-1}\MAT{U}^T=\MAT{M}^{-1}\MAT{U}\MAT{D}\MAT{U}^T=\MAT{U}\MAT{D}\MAT{U}^T\MAT{M}^{-1}$.
+From there, we obtain
 $$
-    \diff g(\eigsMat)[\diff\eigsMat] =
-    \tr(\MAT{U}\MAT{D}\MAT{U}^T(\diff(\point^{\nicefrac{-1}2})\point^{\nicefrac12} + \point^{\nicefrac12}\diff(\point^{\nicefrac{-1}2})))
+    \diff g(\eigsMat) =
+    \tr(\MAT{U}\MAT{D}\MAT{U}^T(\diff(\point^{\nicefrac{-1}2})\point^{\nicefrac12} + \point^{\nicefrac12}\diff(\point^{\nicefrac{-1}2}))).
 $$
-Leveraging $\diff(\point^{\nicefrac{-1}2})\point^{\nicefrac{-1}2} + \point^{\nicefrac{-1}2}\diff(\point^{\nicefrac{-1}2}) = -\point^{-1}\tangentVector\point^{-1}$, one can get
+Leveraging $\diff(\point^{\nicefrac{-1}2})\point^{\nicefrac{-1}2} + \point^{\nicefrac{-1}2}\diff(\point^{\nicefrac{-1}2}) = -\point^{-1}\diff\point\point^{-1}$, one gets
 $$
-    \diff g(\eigsMat)[\diff\eigsMat] = -\tr(\point^{\nicefrac{-1}2}\MAT{U}\MAT{D}\MAT{U}^T\point^{\nicefrac{-1}2}\tangentVector) = \diff f(\point)[\tangentVector] = \tr(\point^{-1}\grad f(\point)\point^{-1}\tangentVector).
+    \diff g(\eigsMat) = -\tr(\point^{\nicefrac{-1}2}\MAT{U}\MAT{D}\MAT{U}^T\point^{\nicefrac{-1}2}\diff\point) =
+    \diff f(\point) = \tr(\point^{-1}\grad f(\point)\point^{-1}\diff\point).
 $$
 The result is finally obtained by identification.
 
@@ -36,26 +40,59 @@ The result is finally obtained by identification.
 
 \subsection{Proof of Proposition~\ref{prop:RMT_Fisher_SCM_deterministic_grad}}
 
-To get the gradient of $g$, we first compute its directional derivative $\diff g(\MAT{\Lambda})$ at $\eigsMat$.
-Given the eigenvalue decomposition $\eigsMat - \frac{\sqrt{\VEC{\Lambda}}\sqrt{\VEC{\Lambda}^T}}{\nsamples}=\MAT{V}\diag(\VEC{\zeta})\MAT{V}^T$, one can show
+To get the gradient of $g$, the directional derivative $\diff g(\eigsMat)$ at $\eigsMat$ is computed.
+%
+Let the eigenvalue decomposition $\eigsMat - \frac{\sqrt{\VEC{\lambda}}\sqrt{\VEC{\lambda}}^T}{\nsamples}=\MAT{V}\diag(\VEC{\zeta})\MAT{V}^T$, where $\VEC{\lambda}=\diag(\eigsMat)$.
+The differential $\diff\VEC{\zeta}$ of the eigenvalues $\VEC{\zeta}$ is $\diff\VEC{\zeta}=\diag(\MAT{V}^T\diff(\eigsMat - \frac{\sqrt{\VEC{\lambda}}\sqrt{\VEC{\lambda}}^T}{\nsamples})\MAT{V})$.
+%
+Differentiating each term of $g$ yields
 \begin{equation*}
     \diff g(\MAT{\Lambda}) = \frac{1}{2p} \diff (\tr(\log^2(\MAT{\Lambda}))) + \frac{1}{p} \diff (\log|\MAT{\Lambda}|) - (\diff \VEC{\lambda}-\diff \VEC{\zeta})^T\left( \frac{1}{p} \MAT{Q}\onevec +\frac{1-c}{c} \VEC{q} \right) - (\VEC{\lambda}-\VEC{\zeta})^T\left( \frac{1}{p} \diff\MAT{Q}\onevec
-+\frac{1-c}{c} \diff\VEC{q} \right)
+    +\frac{1-c}{c} \diff\VEC{q} \right).
 \end{equation*}
-where
-$\diff\VEC{\zeta}=\diag(\MAT{V}^T\diff(\eigsMat - \frac{\sqrt{\VEC{\Lambda}}\sqrt{\VEC{\Lambda}^T}}{\nsamples})\MAT{V})$;
-$\diff\VEC{q} = \diff \MAT{\Lambda} \left( \MAT{I}_p -\log \MAT{\Lambda} \right)\MAT{\Lambda}^{-2}$; 
-$\diff \MAT{Q} = \diff \MAT{\Lambda} \MAT{B} + \MAT{C} \diff \MAT{\Lambda}$ with $\MAT{B}$ and $\MAT{C}$ defined in proposition \ref{prop:RMT_Fisher_SCM_deterministic_grad}.
-We obtain
-$$
+%
+By leveraging classical results, we obtain
+\begin{equation*}
     \frac{1}{2p} \diff (\tr(\log^2(\MAT{\Lambda}))) + \frac{1}{p} \diff (\log|\MAT{\Lambda}|)
     =
     \frac1p\tr([\log(\eigsMat)+\eye]\eigsMat^{-1}\diff\eigsMat).
-$$
-We further have
-$$
+\end{equation*}
+%
+In the following, $\div$ corresponds to the element-wise division, $\odot$ denotes the Hadamard (element-wise) product, and $\cdot^{\odot\cdot}$ corresponds to the element-wise power function.
+%
+From~\eqref{eq:RMT_Fisher_SCM_deterministic}, $\VEC{q}=\diag(\log(\eigsMat)\eigsMat^{-1})=\frac{\log\VEC{\lambda}}{\VEC{\lambda}}$, and we obtain $\diff\VEC{q}=\diag((\eye-\log\eigsMat)\eigsMat^{-2}\diff\eigsMat)=\frac{\onevec-\log\VEC{\lambda}}{\VEC{\lambda}^{\odot 2}}\odot\diff\VEC{\lambda}$.
+One can also rewrite $\MAT{Q}$ as
+\begin{equation*}
+    \MAT{Q} = \frac{[(\VEC{\lambda}\odot\log\VEC{\lambda})\cdot\onevec^T - \VEC{\lambda}\cdot\log\VEC{\lambda}^T] - [\VEC{\lambda}\cdot\onevec^T - \onevec\cdot\VEC{\lambda}^T] + \eye}{[\VEC{\lambda}\cdot\onevec^T - \onevec\cdot\VEC{\lambda}^T]^{\odot 2} + 2\eigsMat}.
+\end{equation*}
+Differentiating this yields
+\begin{multline*}
+    \diff\MAT{Q} =
+    \frac{
+        \diff\eigsMat[\log\VEC{\lambda}\cdot\onevec^T - \onevec\cdot\log\VEC{\lambda}^T] + [\VEC{\lambda}\cdot\onevec^T-\onevec\cdot\VEC{\lambda}^T]\odot(\onevec\cdot\frac{\onevec}{\VEC{\lambda}}^T)\diff\eigsMat
+    }
+    {
+        [\VEC{\lambda}\cdot\onevec^T-\onevec\cdot\VEC{\lambda}^T]^{\odot 2} + 2\eigsMat
+    }
+    \\
+    -\frac{
+        (2\diff\eigsMat(\onevec\cdot\onevec^T) + [\eye - 2(\onevec\cdot\onevec^T)]\diff\eigsMat)
+        \odot
+        ([(\VEC{\lambda}\odot\log\VEC{\lambda})\cdot\onevec^T - \VEC{\lambda}\cdot\log\VEC{\lambda}^T] - [\VEC{\lambda}\cdot\onevec^T - \onevec\cdot\VEC{\lambda}^T] + \eye)
+    }
+    {
+        [\VEC{\lambda}\cdot\onevec^T-\onevec\cdot\VEC{\lambda}^T]^{\odot 3} + 2\eigsMat^2
+    },
+\end{multline*}
+where we use $(\diff\VEC{\lambda}\odot\VEC{a})\cdot\VEC{b}^T=\diff\eigsMat(\VEC{a}\cdot\VEC{b}^T)$ and $\VEC{a}\cdot(\diff\VEC{\lambda}\odot\VEC{b})^T=(\VEC{a}\cdot\VEC{b}^T)\diff\eigsMat$.
+Notice that in the equation above, when the diagonal part of the numerator is equal to zero, then the diagonal part of the denominator can be replaced with anything different from zero.
+We usually choose $\eye$.
+From there, calculations allow to obtain $\diff\MAT{Q}=\diff\eigsMat\MAT{B}+\MAT{C}\diff\eigsMat$ with $\MAT{B}$ and $\MAT{C}$ defined in Proposition \ref{prop:RMT_Fisher_SCM_deterministic_grad}.
+
+Further calculations yield
+\begin{equation*}
     - (\diff \VEC{\lambda}-\diff \VEC{\zeta})^T\left( \frac{1}{p} \MAT{Q}\onevec +\frac{1-c}{c} \VEC{q} \right) = -\tr(\MAT{\Delta}\diff\eigsMat) - \tr(\diag(\MAT{A}\MAT{V}\MAT{\Delta}\MAT{A}^T)\diff\eigsMat),
-$$
+\end{equation*}
 where $\MAT{A}$ and $\MAT{\Delta}$ are defined in proposition \ref{prop:RMT_Fisher_SCM_deterministic_grad}.
 We also have
 $$
@@ -68,6 +105,39 @@ $$
     = -\frac{1-c}{c}\tr(\eigsMat^{-2}(\eye-\log(\eigsMat))(\eigsMat-\diag(\zeta))\diff\eigsMat).
 $$
 The result is obtained by combining all above equation and identification with $\tr(\eigsMat^{-2}\grad g(\eigsMat)\diff\eigsMat) = \diff g(\MAT{\Lambda})$.
+
+% we first compute its directional derivative $\diff g(\MAT{\Lambda})$ at $\eigsMat$.
+% Given the eigenvalue decomposition $\eigsMat - \frac{\sqrt{\VEC{\Lambda}}\sqrt{\VEC{\Lambda}^T}}{\nsamples}=\MAT{V}\diag(\VEC{\zeta})\MAT{V}^T$, one can show
+% \begin{equation*}
+%     \diff g(\MAT{\Lambda}) = \frac{1}{2p} \diff (\tr(\log^2(\MAT{\Lambda}))) + \frac{1}{p} \diff (\log|\MAT{\Lambda}|) - (\diff \VEC{\lambda}-\diff \VEC{\zeta})^T\left( \frac{1}{p} \MAT{Q}\onevec +\frac{1-c}{c} \VEC{q} \right) - (\VEC{\lambda}-\VEC{\zeta})^T\left( \frac{1}{p} \diff\MAT{Q}\onevec
+% +\frac{1-c}{c} \diff\VEC{q} \right)
+% \end{equation*}
+% where
+% $\diff\VEC{\zeta}=\diag(\MAT{V}^T\diff(\eigsMat - \frac{\sqrt{\VEC{\Lambda}}\sqrt{\VEC{\Lambda}^T}}{\nsamples})\MAT{V})$;
+% $\diff\VEC{q} = \diff \MAT{\Lambda} \left( \MAT{I}_p -\log \MAT{\Lambda} \right)\MAT{\Lambda}^{-2}$; 
+% $\diff \MAT{Q} = \diff \MAT{\Lambda} \MAT{B} + \MAT{C} \diff \MAT{\Lambda}$ with $\MAT{B}$ and $\MAT{C}$ defined in proposition \ref{prop:RMT_Fisher_SCM_deterministic_grad}.
+% We obtain
+% $$
+%     \frac{1}{2p} \diff (\tr(\log^2(\MAT{\Lambda}))) + \frac{1}{p} \diff (\log|\MAT{\Lambda}|)
+%     =
+%     \frac1p\tr([\log(\eigsMat)+\eye]\eigsMat^{-1}\diff\eigsMat).
+% $$
+% We further have
+% $$
+%     - (\diff \VEC{\lambda}-\diff \VEC{\zeta})^T\left( \frac{1}{p} \MAT{Q}\onevec +\frac{1-c}{c} \VEC{q} \right) = -\tr(\MAT{\Delta}\diff\eigsMat) - \tr(\diag(\MAT{A}\MAT{V}\MAT{\Delta}\MAT{A}^T)\diff\eigsMat),
+% $$
+% where $\MAT{A}$ and $\MAT{\Delta}$ are defined in proposition \ref{prop:RMT_Fisher_SCM_deterministic_grad}.
+% We also have
+% $$
+%     - \frac{1}{p}(\VEC{\lambda}-\VEC{\zeta})^T\diff\MAT{Q}\onevec
+%     = -\frac1p\tr(\diag(\MAT{B}\onevec(\VEC{\lambda}-\VEC{\zeta})^T + \onevec(\VEC{\lambda}-\VEC{\zeta})^T\MAT{C})\diff\eigsMat),
+% $$
+% and
+% $$
+%     -\frac{1-c}{c}(\VEC{\lambda}-\VEC{\zeta})^T\diff\VEC{q}
+%     = -\frac{1-c}{c}\tr(\eigsMat^{-2}(\eye-\log(\eigsMat))(\eigsMat-\diag(\zeta))\diff\eigsMat).
+% $$
+% The result is obtained by combining all above equation and identification with $\tr(\eigsMat^{-2}\grad g(\eigsMat)\diff\eigsMat) = \diff g(\MAT{\Lambda})$.
 
 
 
@@ -83,7 +153,7 @@ Remaining non-zero elements are uniformly drawn in-between.
 From there, matrices $\dataMat\in\realSpace^{\nfeatures\times\nsamples}$ are simulated.
 Each column vector of $\dataMat$ is independently drawn from $\mathcal{N}(\VEC{0},\Cov)$.
 The effect of the number of samples $\nsamples$ is studied.
-We perform $100$ Monte Carlo simulations.
+We perform $1000$ Monte Carlo simulations.
 
 To estimate $\Cov$ from $\dataMat$, we consider the following methods:
 (\emph{i}) the SCM estimator $\SCM$;
@@ -104,11 +174,11 @@ Thus, exploiting~\eqref{eq:RMT_Fisher_SCM_deterministic} might generally not be 
 To conclude on a positive note, notice that, while conducting our simulations, we encountered some rare cases at low sample support where $\SCM$, $\linearLW$ and $\nonlinearLW$ behave poorly (especially $\nonlinearLW$), while $\CovRMTdist$ performed well.
 We believe that this occurs when the SCM does not provide good eigenvectors.
 
-\begin{figure}[t]
+\begin{figure}[hb!]
     \centering
     \input{"Figures/mse_estimation_cov/64/plot.tex"}
-    \vspace{-2em}
-    \caption{MSE of the estimated covariance. Parameters are $p=64$, $\ell_{\mathrm{max}}=100$, $\epsilon=10^{-6}$, $\alpha=10$. Plot done over 1000 trials. The line corresponds to the mean and the filled-are corresponds to the $5$-th and $95$-th quantiles over the trials.}
+    % \vspace{-2em}
+    \caption{MSE of the estimated covariance. Parameters are $p=64$, $\ell_{\mathrm{max}}=100$, $\epsilon=10^{-6}$, $\alpha=10$. Plot done over 1000 trials. The line corresponds to the median and the filled area corresponds to the $5$-th and $95$-th quantiles over the trials.}
     \label{fig:cov_simu}
 \end{figure}
 
@@ -130,55 +200,55 @@ We believe that this occurs when the SCM does not provide good eigenvectors.
 %   \label{fig:mse nmatrices}
 % \end{figure*}
 
-\section{Simulations for mean estimation of Section~\ref{sec:mean}}
-\label{app:simu_RMTMean}
-We start with the experimental setup.
-First, a center $\Mean\in\SPDman$ ($p=64$) is simulated the same way the true covariance $\Cov$ in Section~\ref{sec:cov:simu}.
-%
-Then, $\nmatrices$ matrices $\{\Cov_k\}$ whose Fréchet mean is $\Mean$ are randomly generated.
-To do so, given $k$, we start by drawing $\frac{\nfeatures(\nfeatures+1)}{2}$ values from $\mathcal{N}(0,\sigma^2)$, with $\sigma^2=0.1$.
-These are used to canonically construct the symmetric matrix $\MAT{S}_k$.
-A set of $\nmatrices$ centered symmetric matrices $\{\tangentVector_k\}$ is obtained by canceling the mean of the $\MAT{S}_k$'s, \emph{i.e.}, $\tangentVector_k = \MAT{S}_k - \frac1{\nmatrices}\sum_{k'}\MAT{S}_{k'}$.
-Hence, $\frac1{K}\sum_k\tangentVector_k=\MAT{0}$.
-Finally, $\Cov_k=\Mean^{\nicefrac12}\expm(\tangentVector_k)\Mean^{\nicefrac12}$.
-%
-After that, we generate $\nmatrices$ matrices $\dataMat$ in $\realSpace^{\nfeatures\times\nsamples}$ such that each column of $\dataMat$ is drawn from $\mathcal{N}(\VEC{0},\Cov_k)$.
-%
-$100$ Monte Carlo runs are performed in order to study the effects of the choices of $\nsamples$ and $\nmatrices$.
+% \section{Simulations for mean estimation of Section~\ref{sec:mean}}
+% \label{app:simu_RMTMean}
+% We start with the experimental setup.
+% First, a center $\Mean\in\SPDman$ ($p=64$) is simulated the same way the true covariance $\Cov$ in Section~\ref{sec:cov:simu}.
+% %
+% Then, $\nmatrices$ matrices $\{\Cov_k\}$ whose Fréchet mean is $\Mean$ are randomly generated.
+% To do so, given $k$, we start by drawing $\frac{\nfeatures(\nfeatures+1)}{2}$ values from $\mathcal{N}(0,\sigma^2)$, with $\sigma^2=0.1$.
+% These are used to canonically construct the symmetric matrix $\MAT{S}_k$.
+% A set of $\nmatrices$ centered symmetric matrices $\{\tangentVector_k\}$ is obtained by canceling the mean of the $\MAT{S}_k$'s, \emph{i.e.}, $\tangentVector_k = \MAT{S}_k - \frac1{\nmatrices}\sum_{k'}\MAT{S}_{k'}$.
+% Hence, $\frac1{K}\sum_k\tangentVector_k=\MAT{0}$.
+% Finally, $\Cov_k=\Mean^{\nicefrac12}\expm(\tangentVector_k)\Mean^{\nicefrac12}$.
+% %
+% After that, we generate $\nmatrices$ matrices $\dataMat$ in $\realSpace^{\nfeatures\times\nsamples}$ such that each column of $\dataMat$ is drawn from $\mathcal{N}(\VEC{0},\Cov_k)$.
+% %
+% $100$ Monte Carlo runs are performed in order to study the effects of the choices of $\nsamples$ and $\nmatrices$.
 
-To estimate $\Mean$ from $\{\dataMat_k\}$, we consider several methods.
-First, we consider two steps methods, which consist in estimating covariance matrices and then their usual Fréchet mean.
-The mean resulting from the SCM estimator is denoted $\MeanSCM$.
-The ones obtained after employing the linear and non-linear Ledoit-Wolf estimators are denoted $\MeanLinearLW$ and $\MeanNonLinearLW$, respectively.
-These are compared to our proposed RMT based mean $\MeanRMT$ obtained with Algorithm~\ref{algo:RMTMean}.
-To measure performance, we use the squared Fisher distance~\eqref{eq:Fisher_dist} between the true mean and its estimator.
+% To estimate $\Mean$ from $\{\dataMat_k\}$, we consider several methods.
+% First, we consider two steps methods, which consist in estimating covariance matrices and then their usual Fréchet mean.
+% The mean resulting from the SCM estimator is denoted $\MeanSCM$.
+% The ones obtained after employing the linear and non-linear Ledoit-Wolf estimators are denoted $\MeanLinearLW$ and $\MeanNonLinearLW$, respectively.
+% These are compared to our proposed RMT based mean $\MeanRMT$ obtained with Algorithm~\ref{algo:RMTMean}.
+% To measure performance, we use the squared Fisher distance~\eqref{eq:Fisher_dist} between the true mean and its estimator.
 
-Results are presented in Figures~\ref{fig:Mean:mse_nsamples} and~\ref{fig:Mean:mse_nmatrices}.
-Figure~\ref{fig:Mean:mse_nsamples} illustrates the effect of varying the number of samples $\nsamples$ while the number of matrices $\nmatrices$ is fixed.
-Figure~\ref{fig:Mean:mse_nmatrices} shows the effect of the choice of $\nmatrices$ while $\nsamples$ is fixed.
-%
-We clearly observe that our proposed RMT based mean estimator $\MeanRMT$ outperforms other methods.
-In both cases, $\MeanLinearLW$ features very poor performance.
-When $\nsamples$ increases, $\MeanSCM$ and $\MeanNonLinearLW$ slowly catch up with $\MeanRMT$.
-However, when $\nsamples$ is fixed (low support, but not that much), as $\nmatrices$ grows, the performance of $\MeanSCM$ and $\MeanNonLinearLW$ reach a plateau while the one of $\MeanRMT$ strongly improves.
-%
-In conclusion, when the available amount of samples $\nsamples$ is somewhat limited, our proposed RMT based method is very advantageous as compared to the others, especially if $\nmatrices$ is large.
+% Results are presented in Figures~\ref{fig:Mean:mse_nsamples} and~\ref{fig:Mean:mse_nmatrices}.
+% Figure~\ref{fig:Mean:mse_nsamples} illustrates the effect of varying the number of samples $\nsamples$ while the number of matrices $\nmatrices$ is fixed.
+% Figure~\ref{fig:Mean:mse_nmatrices} shows the effect of the choice of $\nmatrices$ while $\nsamples$ is fixed.
+% %
+% We clearly observe that our proposed RMT based mean estimator $\MeanRMT$ outperforms other methods.
+% In both cases, $\MeanLinearLW$ features very poor performance.
+% When $\nsamples$ increases, $\MeanSCM$ and $\MeanNonLinearLW$ slowly catch up with $\MeanRMT$.
+% However, when $\nsamples$ is fixed (low support, but not that much), as $\nmatrices$ grows, the performance of $\MeanSCM$ and $\MeanNonLinearLW$ reach a plateau while the one of $\MeanRMT$ strongly improves.
+% %
+% In conclusion, when the available amount of samples $\nsamples$ is somewhat limited, our proposed RMT based method is very advantageous as compared to the others, especially if $\nmatrices$ is large.
 
-\begin{figure}
-    \centering
-    \input{"Figures/mse_nsamples/plot.tex"}
-    \vspace{-2em}
-    \caption{MSE of the estimated Fréchet-mean towards true mean matrix. Parameters are $p=64$, $K=10$, $\ell_{\mathrm{max}}=100$, $\epsilon=10^{-6}$, $\alpha = 10$. Plot done over 1000 trials. The line corresponds to the mean and the filled-are corresponds to the $5$-th and $95$-th quantiles over the trials.}
-    \label{fig:Mean:mse_nsamples}
-\end{figure}
+% \begin{figure}
+%     \centering
+%     \input{"Figures/mse_nsamples/plot.tex"}
+%     \vspace{-2em}
+%     \caption{MSE of the estimated Fréchet-mean towards true mean matrix. Parameters are $p=64$, $K=10$, $\ell_{\mathrm{max}}=100$, $\epsilon=10^{-6}$, $\alpha = 10$. Plot done over 1000 trials. The line corresponds to the mean and the filled-are corresponds to the $5$-th and $95$-th quantiles over the trials.}
+%     \label{fig:Mean:mse_nsamples}
+% \end{figure}
 
-\begin{figure}
-    \centering
-    \input{"Figures/mse_nmatrices/64_128/plot_legend"}
-    \vspace{-2em}
-    \caption{MSE of the estimated Fréchet-mean towards true mean matrix. Parameters are $p=64$, $n=128$, $\ell_{\mathrm{max}}=100$, $\epsilon=10^{-6}$, $\alpha = 10$. Plot done over 100 trials. The line corresponds to the mean and the filled-are corresponds to the $5$-th and $95$-th quantiles over the trials.}
-    \label{fig:Mean:mse_nmatrices}
-\end{figure}
+% \begin{figure}
+%     \centering
+%     \input{"Figures/mse_nmatrices/64_128/plot_legend"}
+%     \vspace{-2em}
+%     \caption{MSE of the estimated Fréchet-mean towards true mean matrix. Parameters are $p=64$, $n=128$, $\ell_{\mathrm{max}}=100$, $\epsilon=10^{-6}$, $\alpha = 10$. Plot done over 100 trials. The line corresponds to the mean and the filled-are corresponds to the $5$-th and $95$-th quantiles over the trials.}
+%     \label{fig:Mean:mse_nmatrices}
+% \end{figure}
 
 
 % \begin{figure}[h]

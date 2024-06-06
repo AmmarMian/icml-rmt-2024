@@ -179,11 +179,13 @@ if __name__ == "__main__":
     df = pd.DataFrame(errors)
     df_mean = df.groupby(["n_samples"]).mean().drop(columns=["trial_no"])
     df_5 = df.groupby(["n_samples"]).quantile(0.05).drop(columns=["trial_no"])
+    df_50 = df.groupby(["n_samples"]).quantile(0.50).drop(columns=["trial_no"])
     df_95 = df.groupby(["n_samples"]).quantile(0.95).drop(columns=["trial_no"])
 
     # logging.info("Saving results")
     # df_mean.to_csv(os.path.join(config["results_path"], "mean.csv"))
     # df_5.to_csv(os.path.join(config["results_path"], "5.csv"))
+    # df_50.to_csv(os.path.join(config["results_path"], "50.csv"))
     # df_95.to_csv(os.path.join(config["results_path"], "95.csv"))
     # logging.info("Mean:\n" + str(df_mean))
 
@@ -192,7 +194,7 @@ if __name__ == "__main__":
     fig, ax = plt.subplots(figsize=(8,4))
     colors = ['red', 'blue', 'green', 'orange', 'black']
     for i, method in enumerate(estimation_methods.keys()):
-        ax.plot(n_samples_list, df_mean[method], color=colors[i], label=method)
+        ax.plot(n_samples_list, df_50[method], color=colors[i], label=method)
         ax.fill_between(n_samples_list, df_5[method], df_95[method],
                         color=colors[i], alpha=0.2)
     ax.set_xlabel("Number of samples")
